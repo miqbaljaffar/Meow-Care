@@ -19,7 +19,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  kucing Kucing[]
+  kucing  Kucing[]
+  artikel Artikel[] 
 }
 
 // Model untuk Kucing
@@ -50,9 +51,23 @@ model Antrian {
   namaPemilik   String
   namaKucing    String
   nomorTelepon  String
-  jenisLayanan  String // e.g., "Pemeriksaan Umum", "Vaksinasi", "Sterilisasi"
+  jenisLayanan  String
   nomorAntrian  Int      @unique
-  status        String   @default("Menunggu") // "Menunggu", "Dilayani", "Selesai"
+  status        String   @default("Menunggu")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+model Artikel {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique // Untuk URL yang rapi, cth: /blog/cara-merawat-kucing
+  judul       String
+  konten      String   // Konten artikel dalam format Markdown
+  kutipan     String   // Kutipan singkat untuk ditampilkan di daftar artikel
+  gambar      String?  // URL gambar utama (opsional)
+  status      String   @default("draf") // "draf" atau "terbit"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  penulis     User     @relation(fields: [penulisId], references: [id])
+  penulisId   Int
 }

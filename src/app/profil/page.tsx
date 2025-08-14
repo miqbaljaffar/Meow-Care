@@ -1,66 +1,80 @@
-import prisma from '@/lib/prisma';
-import { User, Kucing, RiwayatLayanan } from '@prisma/client';
-// Anda memerlukan cara untuk mendapatkan ID pengguna yang sedang login, misalnya dari sesi.
-// Untuk contoh ini, kita akan hardcode ID pengguna.
-const USER_ID = 1; 
+// src/app/profil/page.tsx
 
-async function getProfileData(userId: number) {
-    const user = await prisma.user.findUnique({
-        where: { id: userId },
-        include: {
-            kucing: {
-                include: {
-                    riwayat: true,
-                },
-            },
-        },
-    });
-    return user;
-}
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { getUserProfile } from '@/actions/profil.actions';
+import CatCard from '@/components/CatCard';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
+import { FaCat, FaUserCircle } from 'react-icons/fa';
+import AddCatButton from '@/components/AddCatButton';
 
 export default async function ProfilPage() {
-    const user = await getProfileData(USER_ID);
+  const session = await getServerSession(authOptions);
 
-    if (!user) {
-        return <p>Pengguna tidak ditemukan.</p>;
-    }
+  // Cek sesi dan pastikan user.id ada
+  if (!session?.user?.id) {
+    redirect('/login');
+  }
 
+  // Gunakan session.user.id yang sudah pasti ada
+  const user = await getUserProfile(session.user.id);
+
+  if (!user) {
     return (
-        <div className="container mx-auto py-10">
-            <h1 className="text-3xl font-bold mb-6">Profil Saya</h1>
-            
-            {/* Informasi Pemilik */}
-            <div className="bg-white shadow-md rounded-lg p-6 mb-8">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">Informasi Pemilik</h2>
-                <p><strong>Nama:</strong> {user.nama}</p>
-                <p><strong>Email:</strong> {user.email}</p>
-            </div>
-
-            {/* Informasi Kucing */}
-            <div className="bg-white shadow-md rounded-lg p-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">Data Kucing Saya</h2>
-                {user.kucing.map((kucing) => (
-                    <div key={kucing.id} className="mb-6 border-b pb-6">
-                        <h3 className="text-xl font-semibold">{kucing.nama}</h3>
-                        <p><strong>Spesies:</strong> {kucing.spesies}</p>
-                        <p><strong>Umur:</strong> {kucing.umur} tahun</p>
-                        
-                        {/* Riwayat Layanan */}
-                        <div className="mt-4">
-                            <h4 className="font-bold">Riwayat Layanan:</h4>
-                            <ul className="list-disc list-inside mt-2 space-y-1">
-                                {kucing.riwayat.map((riwayat) => (
-                                    <li key={riwayat.id}>
-                                        {new Date(riwayat.tanggal).toLocaleDateString('id-ID')}: {riwayat.jenisLayanan}
-                                        {riwayat.catatan && ` - Catatan: ${riwayat.catatan}`}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                ))}
-                 {/* Tombol untuk menambah data kucing bisa ditambahkan di sini */}
-            </div>
-        </div>
+      <div className="container mx-auto flex min-h-screen items-center justify-center px-4 py-8">
+        <p className="text-xl text-gray-600">Gagal memuat profil pengguna.</p>
+      </div>
     );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-12">
+        {/* --- Bagian Header Profil --- */}
+        <div className="mb-12 rounded-xl bg-white p-8 shadow-lg">
+          <div className="flex flex-col items-center gap-6 md:flex-row">
+            <FaUserCircle className="text-7xl text-cyan-500" />
+            <div>
+              {/* FIX: Menggunakan user.nama bukan user.name */}
+              <h1 className="text-4xl font-bold text-gray-800">{user.nama}</h1>
+              <p className="mt-1 text-lg text-gray-500">{user.email}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* --- Bagian Data Kucing --- */}
+        <div className="rounded-xl bg-white p-8 shadow-lg">
+          <div className="flex items-center justify-between border-b border-gray-200 pb-6">
+            <div className="flex items-center gap-3">
+              <FaCat className="text-3xl text-cyan-500" />
+              <h2 className="text-3xl font-bold text-gray-800">
+                Kucing Terdaftar
+              </h2>
+            </div>
+            {/* FIX: Mengubah user.id (number) menjadi string */}
+            <AddCatButton userId={user.id.toString()} />
+          </div>
+
+          {user.kucing && user.kucing.length > 0 ? (
+            <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {user.kucing.map((kucing) => (
+                <CatCard key={kucing.id} kucing={kucing} />
+              ))}
+            </div>
+          ) : (
+            <div className="mt-8 flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-12 text-center">
+              <FaCat className="text-5xl text-gray-400" />
+              <p className="mt-4 text-xl font-medium text-gray-600">
+                Anda belum mendaftarkan kucing.
+              </p>
+              <p className="mt-1 text-gray-500">
+                {/* FIX: Mengganti " dengan &quot; untuk lolos dari ESLint */}
+                Klik &quot;Tambah Kucing&quot; untuk memulai.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
