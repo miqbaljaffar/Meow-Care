@@ -8,6 +8,7 @@ export async function createAntrian(data: {
   namaPemilik: string;
   namaKucing: string;
   nomorTelepon: string;
+  jenisLayanan: string;
 }) {
   try {
     const lastAntrian = await prisma.antrian.findFirst({
@@ -19,14 +20,13 @@ export async function createAntrian(data: {
     const antrianBaru = await prisma.antrian.create({
       data: {
         ...data,
-        jenisLayanan: 'Pemeriksaan Umum', // Default atau bisa ditambahkan di form
         nomorAntrian: newNomorAntrian,
         status: 'Menunggu',
       },
     });
 
-    revalidatePath('/'); // Refresh data di halaman utama
-    revalidatePath('/admin'); // Refresh data di halaman admin
+    revalidatePath('/'); 
+    revalidatePath('/admin'); 
     return { success: true, data: antrianBaru };
   } catch (error) {
     return { success: false, message: 'Gagal membuat antrian.' };

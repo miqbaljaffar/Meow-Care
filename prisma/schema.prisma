@@ -10,6 +10,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Model untuk Pengguna
+model User {
+  id        Int      @id @default(autoincrement())
+  nama      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  kucing Kucing[]
+}
+
+// Model untuk Kucing
+model Kucing {
+  id        Int      @id @default(autoincrement())
+  nama      String
+  spesies   String
+  umur      Int
+  pemilik   User     @relation(fields: [pemilikId], references: [id])
+  pemilikId Int
+
+  riwayat RiwayatLayanan[]
+}
+
+// Model untuk Riwayat Layanan
+model RiwayatLayanan {
+  id           Int      @id @default(autoincrement())
+  kucing       Kucing   @relation(fields: [kucingId], references: [id])
+  kucingId     Int
+  jenisLayanan String
+  catatan      String?
+  tanggal      DateTime @default(now())
+}
+
+
 model Antrian {
   id            Int      @id @default(autoincrement())
   namaPemilik   String

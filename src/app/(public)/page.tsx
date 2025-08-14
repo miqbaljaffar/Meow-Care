@@ -6,6 +6,7 @@ import LayananSection from '@/components/LayananSection';
 import AlurPendaftaranSection from '@/components/AlurPendaftaranSection'; 
 import TestimoniSection from '@/components/TestimoniSection';
 import AnimatedSection from '@/components/AnimatedSection'; 
+import FiySection from '@/components/FiySection'; 
 
 async function getAntrianData() {
   const [sedangDilayani, antrianMenunggu] = await Promise.all([
@@ -50,6 +51,11 @@ export default async function HomePage() {
 
       <AnimatedSection>
         <AlurPendaftaranSection />
+      </AnimatedSection>
+
+      {/* SECTION FIY DITAMBAHKAN DI SINI */}
+      <AnimatedSection>
+        <FiySection />
       </AnimatedSection>
 
       <AnimatedSection>
