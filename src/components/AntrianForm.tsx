@@ -3,6 +3,7 @@
 import { useState, useTransition } from 'react';
 import { createAntrian } from '@/actions/antrian.actions';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 export default function AntrianForm() {
   const router = useRouter();
@@ -21,11 +22,12 @@ export default function AntrianForm() {
     startTransition(async () => {
       const result = await createAntrian(data);
       if (result.success) {
-        alert(`Pendaftaran berhasil! Nomor antrian Anda adalah ${result.data?.nomorAntrian}`);
-        router.push('/'); // Redirect ke halaman utama
-      } else {
-        setError(result.message || 'Terjadi kesalahan.');
-      }
+        toast.success(`Pendaftaran berhasil! Nomor antrian Anda adalah ${result.data?.nomorAntrian}`);
+        router.push('/');
+    } else {
+      toast.error(result.message || 'Terjadi kesalahan.');
+      setError(result.message || 'Terjadi kesalahan.');
+    }
     });
   };
 

@@ -2,9 +2,10 @@ import prisma from '@/lib/prisma';
 import TampilanAntrian from '@/components/TampilanAntrian';
 import HeroSection from '@/components/HeroSection';
 import Link from 'next/link';
-import LayananSection from '@/components/LayananSection'; // <-- Impor baru
-import AlurPendaftaranSection from '@/components/AlurPendaftaranSection'; // <-- Impor baru
-import TestimoniSection from '@/components/TestimoniSection'; // <-- Impor baru
+import LayananSection from '@/components/LayananSection'; 
+import AlurPendaftaranSection from '@/components/AlurPendaftaranSection'; 
+import TestimoniSection from '@/components/TestimoniSection';
+import AnimatedSection from '@/components/AnimatedSection'; 
 
 async function getAntrianData() {
   const [sedangDilayani, antrianMenunggu] = await Promise.all([
@@ -28,8 +29,8 @@ export default async function HomePage() {
   return (
     <>
       <HeroSection />
-      
-      {/* Bagian Live Antrian */}
+
+      <AnimatedSection>
       <section id="antrian" className="py-20 bg-emerald-50">
         <div className="container mx-auto text-center">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">
@@ -41,11 +42,19 @@ export default async function HomePage() {
           <TampilanAntrian initialData={initialData} />
         </div>
       </section>
+      </AnimatedSection>
 
-      {/* Konten Baru Ditambahkan Di Sini */}
-      <LayananSection />
-      <AlurPendaftaranSection />
-      <TestimoniSection />
+      <AnimatedSection>
+        <LayananSection />
+      </AnimatedSection>
+
+      <AnimatedSection>
+        <AlurPendaftaranSection />
+      </AnimatedSection>
+
+      <AnimatedSection>
+        <TestimoniSection />
+      </AnimatedSection>
     </>
   );
 }

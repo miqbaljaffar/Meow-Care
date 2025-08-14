@@ -8,14 +8,7 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {
-        'brand-green': {
-          light: '#6EE7B7', // Emerald 300
-          DEFAULT: '#10B981', // Emerald 500
-          dark: '#059669',  // Emerald 600
-        },
-        'brand-white': '#F9FAFB', // Gray 50
-      },
+      // You can leave this empty now
     },
   },
   plugins: [],
