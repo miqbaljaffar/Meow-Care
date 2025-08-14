@@ -1,0 +1,23 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Antrian {
+  id            Int      @id @default(autoincrement())
+  namaPemilik   String
+  namaKucing    String
+  nomorTelepon  String
+  jenisLayanan  String // e.g., "Pemeriksaan Umum", "Vaksinasi", "Sterilisasi"
+  nomorAntrian  Int      @unique
+  status        String   @default("Menunggu") // "Menunggu", "Dilayani", "Selesai"
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
