@@ -69,6 +69,21 @@ export default function LayananFormModal({ isOpen, onClose, layananToEdit }: Lay
               required
             />
           </div>
+          {/* INPUT BARU UNTUK IKON */}
+          <div>
+            <label htmlFor="icon" className="block text-sm font-medium text-gray-700">Nama Ikon (dari Lucide)</label>
+            <input
+              id="icon"
+              name="icon"
+              type="text"
+              defaultValue={layananToEdit?.icon || ''}
+              placeholder="Contoh: Stethoscope, ShieldCheck"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-cyan-500 focus:ring-cyan-500"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Lihat daftar ikon di <a href="https://lucide.dev/icons/" target="_blank" rel="noopener noreferrer" className="text-cyan-600 underline">lucide.dev</a>.
+            </p>
+          </div>
           <div className="flex justify-end gap-4 pt-4">
             <button type="button" onClick={onClose} disabled={isPending} className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
               Batal

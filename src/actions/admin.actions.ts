@@ -8,6 +8,7 @@ import { z } from 'zod';
 const LayananSchema = z.object({
   nama: z.string().min(3, 'Nama layanan harus diisi.'),
   deskripsi: z.string().min(10, 'Deskripsi harus lebih detail.'),
+  icon: z.string().optional(), 
 });
 
 // --- CRUD Actions untuk Layanan ---
@@ -16,8 +17,8 @@ export async function createLayanan(formData: FormData) {
   const validatedFields = LayananSchema.safeParse({
     nama: formData.get('nama'),
     deskripsi: formData.get('deskripsi'),
+    icon: formData.get('icon'), 
   });
-
   if (!validatedFields.success) {
     return { success: false, message: validatedFields.error.flatten().fieldErrors };
   }
@@ -37,6 +38,7 @@ export async function updateLayanan(id: number, formData: FormData) {
     const validatedFields = LayananSchema.safeParse({
         nama: formData.get('nama'),
         deskripsi: formData.get('deskripsi'),
+        icon: formData.get('icon'), 
     });
 
     if (!validatedFields.success) {
@@ -72,6 +74,7 @@ export async function deleteLayanan(id: number) {
 const TestimoniSchema = z.object({
     namaPelanggan: z.string().min(3, 'Nama pelanggan harus diisi.'),
     namaKucing: z.string().min(1, 'Nama kucing harus diisi.'),
+    fotoKucing: z.string().url('URL foto tidak valid.').optional().or(z.literal('')), // <-- TAMBAHKAN INI
     kutipan: z.string().min(10, 'Kutipan testimoni harus lebih detail.'),
 });
 
@@ -82,6 +85,7 @@ export async function createTestimoni(formData: FormData) {
     const validatedFields = TestimoniSchema.safeParse({
         namaPelanggan: formData.get('namaPelanggan'),
         namaKucing: formData.get('namaKucing'),
+        fotoKucing: formData.get('fotoKucing'), 
         kutipan: formData.get('kutipan'),
     });
 

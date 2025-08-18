@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma';
+import Image from 'next/image';
 
 async function getTestimoni() {
     return prisma.testimoni.findMany({
@@ -20,7 +21,15 @@ export default async function TestimoniSection() {
                             <div key={item.id} className="bg-white p-8 rounded-lg shadow-lg text-left">
                                 <p className="text-gray-600 italic mb-4">&quot;{item.kutipan}&quot;</p>
                                 <div className="flex items-center">
-                                    <div className="w-12 h-12 rounded-full bg-gray-200 mr-4"></div>
+                                    <div className="relative w-12 h-12 rounded-full bg-gray-200 mr-4 overflow-hidden">
+                                        {/* Ganti div dengan Image */}
+                                        <Image
+                                            src={item.fotoKucing || '/kucing.jpg'} // Fallback jika tidak ada foto
+                                            alt={`Kucing ${item.namaKucing}`}
+                                            layout="fill"
+                                            objectFit="cover"
+                                        />
+                                    </div>
                                     <div>
                                         <p className="font-bold">{item.namaPelanggan}</p>
                                         <p className="text-sm text-gray-500">Pemilik Kucing &quot;{item.namaKucing}&quot;</p>

@@ -59,6 +59,10 @@ export default function TestimoniFormModal({ isOpen, onClose, testimoniToEdit }:
             <input id="namaKucing" name="namaKucing" type="text" defaultValue={testimoniToEdit?.namaKucing} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required />
           </div>
           <div>
+            <label htmlFor="fotoKucing" className="block text-sm font-medium text-gray-700">URL Foto Kucing (Opsional)</label>
+            <input id="fotoKucing" name="fotoKucing" type="url" defaultValue={testimoniToEdit?.fotoKucing || ''} placeholder="https://example.com/kucing.jpg" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+          </div>
+          <div>
             <label htmlFor="kutipan" className="block text-sm font-medium text-gray-700">Kutipan</label>
             <textarea id="kutipan" name="kutipan" rows={4} defaultValue={testimoniToEdit?.kutipan} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required />
           </div>

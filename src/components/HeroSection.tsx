@@ -1,6 +1,9 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Heart, Stethoscope, Bone } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function HeroSection() {
   return (
@@ -19,10 +22,10 @@ export default function HeroSection() {
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
             <Link
-              href="/antrian/baru"
+              href="/layanan" // Perubahan: Mengarahkan ke halaman layanan
               className="px-8 py-4 bg-brand-green text-white font-bold rounded-full shadow-lg hover:bg-brand-green-dark transition-transform transform hover:scale-105"
             >
-              Ambil Nomor Antrian
+              Pilih Layanan & Antri
             </Link>
             <Link
               href="#antrian"
@@ -37,7 +40,6 @@ export default function HeroSection() {
         <div className="relative flex justify-center items-center">
           <div className="absolute w-4/5 h-4/5 bg-emerald-100 rounded-3xl transform -rotate-12"></div>
           <div className="relative z-10">
-            {/* Ganti 'kucing-hero.png' dengan nama file gambar Anda */}
             <Image
               src="/kucing.jpg"
               alt="Kucing Lucu"
@@ -46,16 +48,28 @@ export default function HeroSection() {
               className="rounded-2xl shadow-2xl"
               priority
             />
-             {/* Ikon Dekoratif */}
-            <div className="absolute -top-6 -left-6 bg-white p-3 rounded-full shadow-lg">
+            {/* Ikon Dekoratif dengan Animasi */}
+            <motion.div
+              className="absolute -top-6 -left-6 bg-white p-3 rounded-full shadow-lg"
+              animate={{ rotate: [0, 10, -10, 0], y: [0, -5, 5, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            >
               <Stethoscope className="text-brand-green" size={28} />
-            </div>
-            <div className="absolute -bottom-6 -right-6 bg-white p-3 rounded-full shadow-lg">
+            </motion.div>
+            <motion.div
+              className="absolute -bottom-6 -right-6 bg-white p-3 rounded-full shadow-lg"
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
               <Heart className="text-red-500" size={28} fill="currentColor" />
-            </div>
-             <div className="absolute top-1/2 -right-8 bg-white p-3 rounded-full shadow-lg">
+            </motion.div>
+            <motion.div
+              className="absolute top-1/2 -right-8 bg-white p-3 rounded-full shadow-lg"
+              animate={{ x: [0, 5, -5, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+            >
               <Bone className="text-yellow-600" size={28} />
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

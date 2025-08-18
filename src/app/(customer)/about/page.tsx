@@ -20,16 +20,20 @@ export default function AboutPage() {
       {/* Our Story Section */}
       <AnimatedSection>
         <div className="py-20 bg-emerald-50/50">
-          <div className="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
-            <div className="relative w-full h-80 rounded-2xl shadow-lg overflow-hidden">
-              <Image
-                src="/kucing.jpg" 
-                alt="Tim Meow-Care"
-                layout="fill"
-                objectFit="cover"
-              />
+          <div className="container mx-auto px-4 grid md:grid-cols-5 gap-12 items-center">
+            {/* Kolom Gambar (Potrait) */}
+            <div className="md:col-span-2 flex justify-center">
+              <div className="relative w-full max-w-xs h-[450px] rounded-2xl shadow-lg overflow-hidden">
+                <Image
+                  src="/poor-cat.jpg" 
+                  alt="Klinik Meow-Care"
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
             </div>
-            <div>
+            {/* Kolom Teks */}
+            <div className="md:col-span-3">
               <h2 className="text-3xl font-bold mb-4">Cerita Kami</h2>
               <p className="text-gray-600 mb-4">
                 Meow-Care lahir dari sebuah mimpi sederhana: menciptakan sebuah tempat di mana kucing tidak hanya diobati, tetapi juga dicintai dan dipahami. Berawal dari garasi kecil, kini kami telah berkembang menjadi klinik modern yang dilengkapi dengan fasilitas terbaik dan tim yang solid.
