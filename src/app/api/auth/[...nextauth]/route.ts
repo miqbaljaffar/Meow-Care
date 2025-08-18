@@ -4,6 +4,9 @@ import prisma from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 
+// FIX: Explicitly set the runtime to Node.js
+export const runtime = 'nodejs';
+
 export const {
   handlers: { GET, POST },
   auth,

@@ -5,6 +5,7 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
+import { AtSign, Lock } from 'lucide-react'; // Import ikon
 
 export default function LoginForm() {
   const router = useRouter();
@@ -33,9 +34,16 @@ export default function LoginForm() {
         setIsPending(false);
       } else {
         toast.success('Login berhasil!');
-        // Mengarahkan pengguna ke halaman utama setelah login berhasil
-        router.push('/');
-        // Me-refresh halaman untuk memastikan sesi diperbarui di seluruh aplikasi
+        
+        const response = await fetch('/api/auth/session');
+        const session = await response.json();
+
+        if (session?.user?.role === 'ADMIN') {
+          router.push('/admin');
+        } else {
+          router.push('/');
+        }
+        
         router.refresh();
       }
     } catch (err) {
@@ -46,22 +54,38 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-white p-8 rounded-lg shadow-md">
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-        <input type="email" name="email" id="email" required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2" />
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="relative">
+        <label htmlFor="email" className="sr-only">Email</label>
+        <AtSign className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
+        <input 
+          type="email" 
+          name="email" 
+          id="email" 
+          required 
+          placeholder="Email"
+          className="w-full rounded-full border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green" 
+        />
       </div>
-      <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-        <input type="password" name="password" id="password" required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2" />
+      <div className="relative">
+        <label htmlFor="password" className="sr-only">Password</label>
+        <Lock className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
+        <input 
+          type="password" 
+          name="password" 
+          id="password" 
+          required 
+          placeholder="Password"
+          className="w-full rounded-full border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green" 
+        />
       </div>
 
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && <p className="text-sm text-center text-red-500">{error}</p>}
 
       <button
         type="submit"
         disabled={isPending}
-        className="w-full justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-green hover:bg-brand-green-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-green disabled:bg-gray-400"
+        className="w-full justify-center py-3 px-4 border border-transparent rounded-full shadow-lg text-sm font-bold text-white bg-brand-green hover:bg-brand-green-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-green disabled:bg-gray-400 transition-transform transform hover:scale-105"
       >
         {isPending ? 'Logging in...' : 'Login'}
       </button>

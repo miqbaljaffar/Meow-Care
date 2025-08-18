@@ -1,12 +1,13 @@
+import { cache } from 'react';
 import Image from 'next/image';
 import prisma from '@/lib/prisma';
-import { Dokter } from '@prisma/client'; 
+import { Dokter } from '@prisma/client';
 
-async function getTimDokter() {
+const getTimDokter = cache(async () => {
     return prisma.dokter.findMany({
         orderBy: { createdAt: 'asc' }
     });
-}
+});
 
 export default async function TimDokterSection() {
     const tim = await getTimDokter();
@@ -16,11 +17,11 @@ export default async function TimDokterSection() {
             <div className="container mx-auto text-center">
                 <h2 className="text-3xl font-bold text-gray-800 mb-12">Tim Dokter Profesional Kami</h2>
                 <div className="flex flex-wrap justify-center gap-10">
-                    {tim.map((dokter: Dokter) => ( 
+                    {tim.map((dokter: Dokter) => (
                         <div key={dokter.id} className="text-center">
                             <div className="relative w-48 h-48 mx-auto mb-4">
                                 <Image
-                                    src={dokter.foto || '/default-doctor.jpg'} 
+                                    src={dokter.foto || '/default-doctor.jpg'}
                                     alt={dokter.nama}
                                     layout="fill"
                                     objectFit="cover"

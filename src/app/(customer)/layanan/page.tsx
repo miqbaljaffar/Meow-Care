@@ -1,19 +1,19 @@
+import { cache } from 'react';
 import prisma from '@/lib/prisma';
 import Link from 'next/link';
 // Impor semua ikon dari lucide-react sebagai satu objek
 import * as LucideIcons from 'lucide-react';
 import { Layanan } from '@prisma/client';
-import type { ElementType } from 'react'; // <-- Perbaikan: Impor ElementType
-
+import type { ElementType } from 'react'; 
 // Tipe untuk memastikan kita hanya menggunakan nama ikon yang valid dari Lucide
 type IconName = keyof typeof LucideIcons;
 
 // Mengambil semua data layanan dari database
-async function getAllLayanan(): Promise<Layanan[]> {
+const getAllLayanan = cache(async (): Promise<Layanan[]> => {
   return prisma.layanan.findMany({
     orderBy: { createdAt: 'desc' },
   });
-}
+});
 
 export default async function HalamanLayanan() {
   const daftarLayanan = await getAllLayanan();
@@ -30,7 +30,7 @@ export default async function HalamanLayanan() {
             // Logika untuk memilih komponen ikon secara dinamis
             // Jika nama ikon di database tidak valid atau kosong, gunakan 'Stethoscope' sebagai default
             const IconComponent = (LucideIcons[layanan.icon as IconName] || LucideIcons['Stethoscope']) as ElementType; // <-- Perbaikan: Tambahkan 'as ElementType'
-            
+
             return (
               <div key={layanan.id} className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col text-left">
                 <div className="flex justify-start mb-4">

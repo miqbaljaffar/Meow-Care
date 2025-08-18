@@ -23,6 +23,7 @@ async function getDetailAntrian(id: number) {
   return { ...antrian, antrianDiDepan };
 }
 
+// FIX: Mengubah cara pendefinisian tipe props
 export default async function HalamanStatusAntrian({ params }: { params: { id: string } }) {
   const id = parseInt(params.id, 10);
   if (isNaN(id)) notFound();
@@ -40,7 +41,7 @@ export default async function HalamanStatusAntrian({ params }: { params: { id: s
         <div className="text-left space-y-3 bg-gray-50 p-4 rounded-lg">
           <p><strong>Nama Pemilik:</strong> {detail.namaPemilik}</p>
           <p><strong>Nama Kucing:</strong> {detail.namaKucing}</p>
-          <p><strong>Status:</strong> 
+          <p><strong>Status:</strong>
             <span className="font-semibold ml-2 px-2 py-1 text-sm rounded-full bg-yellow-100 text-yellow-800">
               {detail.status}
             </span>

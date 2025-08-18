@@ -1,10 +1,11 @@
+import { cache } from 'react';
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { marked } from 'marked';
 import Image from 'next/image';
 import { Calendar, User } from 'lucide-react';
 
-async function getArtikelBySlug(slug: string) {
+const getArtikelBySlug = cache(async (slug: string) => {
   const artikel = await prisma.artikel.findUnique({
     where: { slug, status: 'terbit' },
     include: {
@@ -12,7 +13,7 @@ async function getArtikelBySlug(slug: string) {
     }
   });
   return artikel;
-}
+});
 
 export default async function DetailArtikelPage({ params }: { params: { slug: string } }) {
   const artikel = await getArtikelBySlug(params.slug);

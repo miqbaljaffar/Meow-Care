@@ -1,14 +1,15 @@
+import { cache } from 'react';
 import prisma from '@/lib/prisma';
 import Link from 'next/link';
 import Image from 'next/image';
 
-async function getArtikelTerbit() {
+const getArtikelTerbit = cache(async () => {
   const artikel = await prisma.artikel.findMany({
     where: { status: 'terbit' },
     orderBy: { createdAt: 'desc' },
   });
   return artikel;
-}
+});
 
 export default async function BlogPage() {
   const daftarArtikel = await getArtikelTerbit();

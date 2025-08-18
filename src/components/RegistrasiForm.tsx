@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { registerUser } from '@/actions/auth.actions';
+import { User, AtSign, Lock } from 'lucide-react'; // Import ikon
 
 export default function RegistrasiForm() {
   const router = useRouter();
@@ -18,7 +19,7 @@ export default function RegistrasiForm() {
       nama: formData.get('nama') as string,
       email: formData.get('email') as string,
       password: formData.get('password') as string,
-      confirmPassword: formData.get('confirmPassword') as string, // Ambil data konfirmasi
+      confirmPassword: formData.get('confirmPassword') as string,
     };
 
     startTransition(async () => {
@@ -34,31 +35,34 @@ export default function RegistrasiForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-white p-8 rounded-lg shadow-md">
-      <div>
-        <label htmlFor="nama" className="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-        <input type="text" name="nama" id="nama" required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2" />
+    <form onSubmit={handleSubmit} className="space-y-4">
+       <div className="relative">
+        <label htmlFor="nama" className="sr-only">Nama Lengkap</label>
+        <User className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
+        <input type="text" name="nama" id="nama" required placeholder="Nama Lengkap" className="w-full rounded-full border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green" />
       </div>
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-        <input type="email" name="email" id="email" required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2" />
+       <div className="relative">
+        <label htmlFor="email" className="sr-only">Email</label>
+        <AtSign className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
+        <input type="email" name="email" id="email" required placeholder="Email" className="w-full rounded-full border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green" />
       </div>
-      <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-        <input type="password" name="password" id="password" required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2" />
+      <div className="relative">
+        <label htmlFor="password" className="sr-only">Password</label>
+        <Lock className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
+        <input type="password" name="password" id="password" required placeholder="Password" className="w-full rounded-full border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green" />
       </div>
-      {/* --- KOLOM KONFIRMASI PASSWORD BARU --- */}
-      <div>
-        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
-        <input type="password" name="confirmPassword" id="confirmPassword" required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2" />
+      <div className="relative">
+        <label htmlFor="confirmPassword" className="sr-only">Konfirmasi Password</label>
+         <Lock className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
+        <input type="password" name="confirmPassword" id="confirmPassword" required placeholder="Konfirmasi Password" className="w-full rounded-full border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green" />
       </div>
       
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && <p className="text-sm text-center text-red-500">{error}</p>}
       
       <button
         type="submit"
         disabled={isPending}
-        className="w-full justify-center py-2 px-4 border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-green hover:bg-brand-green-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-green disabled:bg-gray-400"
+        className="w-full justify-center py-3 px-4 border-transparent rounded-full shadow-lg text-sm font-bold text-white bg-brand-green hover:bg-brand-green-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-green disabled:bg-gray-400 transition-transform transform hover:scale-105"
       >
         {isPending ? 'Mendaftarkan...' : 'Daftar'}
       </button>

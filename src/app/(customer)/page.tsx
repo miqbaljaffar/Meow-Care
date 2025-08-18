@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import prisma from '@/lib/prisma';
 import TampilanAntrian from '@/components/TampilanAntrian';
 import HeroSection from '@/components/HeroSection';
@@ -6,13 +7,14 @@ import LayananSection from '@/components/LayananSection';
 import TestimoniSection from '@/components/TestimoniSection';
 import AnimatedSection from '@/components/AnimatedSection';
 import Image from 'next/image';
-import TimDokterSection from '@/components/TimDokterSection'; 
+import TimDokterSection from '@/components/TimDokterSection';
 import WhyChooseUs from '@/components/WhyChooseUs';
 
 /**
  * Mengambil data antrian terkini (sedang dilayani dan berikutnya).
+ * DIBUNGKUS DENGAN `cache`
  */
-async function getAntrianData() {
+const getAntrianData = cache(async () => {
   const [sedangDilayani, antrianMenunggu] = await Promise.all([
     prisma.antrian.findFirst({
       where: { status: 'Dilayani' },
@@ -26,18 +28,19 @@ async function getAntrianData() {
     current: sedangDilayani?.nomorAntrian,
     next: antrianMenunggu?.nomorAntrian,
   };
-}
+});
 
 /**
  * Mengambil 3 artikel terbaru yang sudah diterbitkan dari database.
+ * DIBUNGKUS DENGAN `cache`
  */
-async function getArtikelTerbaru() {
+const getArtikelTerbaru = cache(async () => {
     return prisma.artikel.findMany({
         where: { status: 'terbit' },
         take: 3,
         orderBy: { createdAt: 'desc' },
     });
-}
+});
 
 /**
  * Komponen utama untuk halaman beranda.
@@ -86,7 +89,7 @@ export default async function HomePage() {
                       <Link key={artikel.id} href={`/blog/${artikel.slug}`} className="group block bg-gray-50 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden text-left">
                         <div className="relative h-48 w-full">
                           <Image
-                            src={artikel.gambar || '/kucing.jpg'} 
+                            src={artikel.gambar || '/kucing.jpg'}
                             alt={artikel.judul}
                             layout="fill"
                             objectFit="cover"
@@ -112,7 +115,7 @@ export default async function HomePage() {
             </div>
         </section>
       </AnimatedSection>
-      
+
       {/* --- SEKSI TIM DOKTER --- */}
       <AnimatedSection>
         <div className="bg-gray-50">

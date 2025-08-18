@@ -1,6 +1,8 @@
-// src/app/api/antrian/terkini/route.ts
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+
+// Revalidate data setiap 10 detik
+export const revalidate = 10;
 
 export async function GET() {
   const [sedangDilayani, antrianMenunggu] = await Promise.all([

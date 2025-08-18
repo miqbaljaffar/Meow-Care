@@ -1,12 +1,13 @@
+import { cache } from 'react';
 import prisma from '@/lib/prisma';
 import Image from 'next/image';
 
-async function getTestimoni() {
+const getTestimoni = cache(async () => {
     return prisma.testimoni.findMany({
         take: 4, // Ambil 4 testimoni terbaru
         orderBy: { createdAt: 'desc' }
     });
-}
+});
 
 export default async function TestimoniSection() {
     const testimoni = await getTestimoni();
