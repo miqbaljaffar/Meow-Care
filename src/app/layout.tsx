@@ -7,7 +7,7 @@ import AuthProvider from '@/components/AuthProvider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Meow-Care | Puskesmas Kucing Modern',
+  title: 'Meow-Care',
   description: 'Antrian online untuk kesehatan anabul kesayangan Anda',
 };
 

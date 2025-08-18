@@ -3,10 +3,11 @@ import TampilanAntrian from '@/components/TampilanAntrian';
 import HeroSection from '@/components/HeroSection';
 import Link from 'next/link';
 import LayananSection from '@/components/LayananSection';
-import AlurPendaftaranSection from '@/components/AlurPendaftaranSection';
 import TestimoniSection from '@/components/TestimoniSection';
 import AnimatedSection from '@/components/AnimatedSection';
 import Image from 'next/image';
+import TimDokterSection from '@/components/TimDokterSection'; 
+import WhyChooseUs from '@/components/WhyChooseUs';
 
 /**
  * Mengambil data antrian terkini (sedang dilayani dan berikutnya).
@@ -70,9 +71,7 @@ export default async function HomePage() {
         <LayananSection />
       </AnimatedSection>
 
-      <AnimatedSection>
-        <AlurPendaftaranSection />
-      </AnimatedSection>
+      <WhyChooseUs />
 
       {/* --- SEKSI BARU: ARTIKEL TERBARU --- */}
       <AnimatedSection>
@@ -112,6 +111,13 @@ export default async function HomePage() {
                 </div>
             </div>
         </section>
+      </AnimatedSection>
+      
+      {/* --- SEKSI TIM DOKTER --- */}
+      <AnimatedSection>
+        <div className="bg-gray-50">
+          <TimDokterSection />
+        </div>
       </AnimatedSection>
 
       <AnimatedSection>

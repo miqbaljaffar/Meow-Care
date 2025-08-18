@@ -16,8 +16,7 @@ export default async function Navbar() {
         <div className="hidden md:flex items-center gap-8 text-gray-600 font-medium">
           <Link href="/layanan" className="hover:text-brand-green transition-colors">Layanan</Link>
           <Link href="/blog" className="hover:text-brand-green transition-colors">Blog</Link>
-          <Link href="/#alur" className="hover:text-brand-green transition-colors">Alur</Link>
-          {/* Link Admin dihapus dari sini */}
+          <Link href="/about" className="hover:text-brand-green transition-colors">About</Link>
         </div>
 
         <div className="flex items-center gap-4">
