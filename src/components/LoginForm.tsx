@@ -26,19 +26,21 @@ export default function LoginForm() {
         email,
         password,
       });
-
+      
       if (result?.error) {
         toast.error("Login gagal! Periksa kembali email dan password Anda.");
         setError("Login gagal! Periksa kembali email dan password Anda.");
+        setIsPending(false);
       } else {
         toast.success('Login berhasil!');
+        // Mengarahkan pengguna ke halaman utama setelah login berhasil
         router.push('/');
+        // Me-refresh halaman untuk memastikan sesi diperbarui di seluruh aplikasi
         router.refresh();
       }
-    } catch (error) {
+    } catch (err) {
       toast.error("Terjadi kesalahan yang tidak terduga.");
       setError("Terjadi kesalahan yang tidak terduga.");
-    } finally {
       setIsPending(false);
     }
   };

@@ -18,6 +18,7 @@ export default function RegistrasiForm() {
       nama: formData.get('nama') as string,
       email: formData.get('email') as string,
       password: formData.get('password') as string,
+      confirmPassword: formData.get('confirmPassword') as string, // Ambil data konfirmasi
     };
 
     startTransition(async () => {
@@ -45,6 +46,11 @@ export default function RegistrasiForm() {
       <div>
         <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
         <input type="password" name="password" id="password" required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2" />
+      </div>
+      {/* --- KOLOM KONFIRMASI PASSWORD BARU --- */}
+      <div>
+        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
+        <input type="password" name="confirmPassword" id="confirmPassword" required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2" />
       </div>
       
       {error && <p className="text-sm text-red-500">{error}</p>}

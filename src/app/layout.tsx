@@ -1,10 +1,8 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer'; 
 import { Toaster } from 'react-hot-toast';
-import AuthProvider from '@/components/AuthProvider'; // <-- Impor provider
+import AuthProvider from '@/components/AuthProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,13 +14,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body>
-        {/* Bungkus dengan AuthProvider */}
+      <body className={inter.className}>
         <AuthProvider>
-          <Toaster position="top-center" /> 
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
+          <Toaster position="top-center" />
+          {children}
         </AuthProvider>
       </body>
     </html>

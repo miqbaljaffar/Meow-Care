@@ -1,17 +1,20 @@
-import NextAuth, { AuthOptions } from 'next-auth';
-import { JWT } from 'next-auth/jwt';
+import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import prisma from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
+import { PrismaAdapter } from '@auth/prisma-adapter';
 
-// Definisikan tipe AuthOptions secara eksplisit
-export const authOptions: AuthOptions = {
+export const {
+  handlers: { GET, POST },
+  auth,
+} = NextAuth({
+  adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
@@ -19,17 +22,21 @@ export const authOptions: AuthOptions = {
         }
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email }
+          where: { email: credentials.email as string },
         });
 
-        if (user && bcrypt.compareSync(credentials.password, user.password)) {
-          // Mengembalikan objek user dengan id, nama, dan email
-          return { id: user.id.toString(), name: user.nama, email: user.email };
+        if (user && user.password && bcrypt.compareSync(credentials.password as string, user.password)) {
+          return {
+            id: user.id.toString(),
+            name: user.nama,
+            email: user.email,
+            role: user.role,
+          };
         } else {
           return null;
         }
-      }
-    })
+      },
+    }),
   ],
   pages: {
     signIn: '/login',
@@ -39,26 +46,19 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      // Objek `user` tersedia saat pertama kali sign-in
-      // Kita teruskan `id` user ke dalam token
       if (user) {
         token.id = user.id;
+        token.role = (user as any).role;
       }
       return token;
     },
     async session({ session, token }) {
-      // Token berisi `id` user, kita tambahkan ke objek session
-      // agar bisa diakses di sisi client
       if (session.user) {
-        // PERBAIKAN: Tipe `session.user` bawaan tidak memiliki `id`.
-        // Kita lakukan casting untuk menambahkan properti `id` dari token.
-        (session.user as { id: string; name?: string | null; email?: string | null; image?: string | null }).id = token.id as string;
+        (session.user as any).id = token.id as string;
+        (session.user as any).role = token.role as string;
       }
       return session;
-    }
-  }
-};
-
-const handler = NextAuth(authOptions);
-
-export { handler as GET, handler as POST };
+    },
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+});

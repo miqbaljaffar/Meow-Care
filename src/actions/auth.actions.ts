@@ -1,4 +1,3 @@
-// src/actions/auth.actions.ts
 'use server';
 
 import prisma from '@/lib/prisma';
@@ -9,6 +8,10 @@ const registerSchema = z.object({
   nama: z.string().min(3, "Nama harus memiliki setidaknya 3 karakter"),
   email: z.string().email("Format email tidak valid"),
   password: z.string().min(6, "Password harus memiliki setidaknya 6 karakter"),
+  confirmPassword: z.string() // Tambahkan field konfirmasi
+}).refine(data => data.password === data.confirmPassword, { // Tambahkan validasi
+  message: "Password dan konfirmasi password tidak cocok.",
+  path: ["confirmPassword"], // Tentukan field mana yang akan menampilkan error
 });
 
 export async function registerUser(data: z.infer<typeof registerSchema>) {

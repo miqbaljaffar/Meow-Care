@@ -1,11 +1,10 @@
 import Link from 'next/link';
 import { PawPrint } from 'lucide-react';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { auth } from '@/app/api/auth/[...nextauth]/route';
 import LogoutButton from './LogoutButton';
 
 export default async function Navbar() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   return (
     <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
@@ -18,7 +17,7 @@ export default async function Navbar() {
           <Link href="/layanan" className="hover:text-brand-green transition-colors">Layanan</Link>
           <Link href="/blog" className="hover:text-brand-green transition-colors">Blog</Link>
           <Link href="/#alur" className="hover:text-brand-green transition-colors">Alur</Link>
-          <Link href="/admin" className="hover:text-brand-green transition-colors">Admin</Link>
+          {/* Link Admin dihapus dari sini */}
         </div>
 
         <div className="flex items-center gap-4">

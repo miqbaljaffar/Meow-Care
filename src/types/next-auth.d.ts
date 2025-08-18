@@ -1,19 +1,34 @@
-import NextAuth from 'next-auth';
+import { DefaultSession, User } from 'next-auth';
+import 'next-auth/jwt';
+import type { NextRequest } from 'next/server'; // <-- Tambahkan import ini
 
 declare module 'next-auth' {
-  /**
-   * Extends the built-in session.user type to include your custom 'id' property.
-   */
   interface Session {
     user: {
-      id: string; // Add your custom property 'id'
+      id: string;
+      role: string;
     } & DefaultSession['user'];
   }
 
-  /**
-   * Extends the built-in user type.
-   */
   interface User {
-    id: string;
+    role?: string;
+  }
+}
+
+declare module 'next-auth/jwt' {
+  interface JWT {
+    role?: string;
+  }
+}
+
+// Tambahkan deklarasi modul untuk NextRequest
+declare module 'next/server' {
+  interface NextRequest {
+    auth: {
+      user?: {
+        id?: string;
+        role?: string;
+      } & DefaultSession['user'];
+    } | null;
   }
 }
