@@ -27,14 +27,14 @@ export default function LoginForm() {
         email,
         password,
       });
-      
+
       if (result?.error) {
         toast.error("Login gagal! Periksa kembali email dan password Anda.");
         setError("Login gagal! Periksa kembali email dan password Anda.");
         setIsPending(false);
       } else {
         toast.success('Login berhasil!');
-        
+
         const response = await fetch('/api/auth/session');
         const session = await response.json();
 
@@ -43,10 +43,10 @@ export default function LoginForm() {
         } else {
           router.push('/');
         }
-        
+
         router.refresh();
       }
-    } catch (err) {
+    } catch { // Hapus variabel 'err'
       toast.error("Terjadi kesalahan yang tidak terduga.");
       setError("Terjadi kesalahan yang tidak terduga.");
       setIsPending(false);
@@ -58,25 +58,25 @@ export default function LoginForm() {
       <div className="relative">
         <label htmlFor="email" className="sr-only">Email</label>
         <AtSign className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
-        <input 
-          type="email" 
-          name="email" 
-          id="email" 
-          required 
+        <input
+          type="email"
+          name="email"
+          id="email"
+          required
           placeholder="Email"
-          className="w-full rounded-full border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green" 
+          className="w-full rounded-full border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green"
         />
       </div>
       <div className="relative">
         <label htmlFor="password" className="sr-only">Password</label>
         <Lock className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
-        <input 
-          type="password" 
-          name="password" 
-          id="password" 
-          required 
+        <input
+          type="password"
+          name="password"
+          id="password"
+          required
           placeholder="Password"
-          className="w-full rounded-full border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green" 
+          className="w-full rounded-full border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green"
         />
       </div>
 

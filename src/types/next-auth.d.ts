@@ -1,6 +1,5 @@
-import { DefaultSession, User } from 'next-auth';
+import { DefaultSession } from 'next-auth';
 import 'next-auth/jwt';
-import type { NextRequest } from 'next/server'; // <-- Tambahkan import ini
 
 declare module 'next-auth' {
   interface Session {
@@ -21,14 +20,4 @@ declare module 'next-auth/jwt' {
   }
 }
 
-// Tambahkan deklarasi modul untuk NextRequest
-declare module 'next/server' {
-  interface NextRequest {
-    auth: {
-      user?: {
-        id?: string;
-        role?: string;
-      } & DefaultSession['user'];
-    } | null;
-  }
-}
+// Deklarasi modul untuk NextRequest tidak lagi diperlukan karena sudah ditangani di middleware

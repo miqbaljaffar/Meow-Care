@@ -3,12 +3,15 @@
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { mkdir, unlink } from 'fs/promises';
+import path from 'path';
+import sharp from 'sharp';
 
 // --- Skema Validasi untuk Layanan ---
 const LayananSchema = z.object({
   nama: z.string().min(3, 'Nama layanan harus diisi.'),
   deskripsi: z.string().min(10, 'Deskripsi harus lebih detail.'),
-  icon: z.string().optional(), 
+  icon: z.string().optional(),
 });
 
 // --- CRUD Actions untuk Layanan ---
@@ -17,7 +20,7 @@ export async function createLayanan(formData: FormData) {
   const validatedFields = LayananSchema.safeParse({
     nama: formData.get('nama'),
     deskripsi: formData.get('deskripsi'),
-    icon: formData.get('icon'), 
+    icon: formData.get('icon'),
   });
   if (!validatedFields.success) {
     return { success: false, message: validatedFields.error.flatten().fieldErrors };
@@ -26,7 +29,7 @@ export async function createLayanan(formData: FormData) {
   try {
     await prisma.layanan.create({ data: validatedFields.data });
     revalidatePath('/admin/layanan');
-    revalidatePath('/layanan'); // Revalidate halaman publik juga
+    revalidatePath('/layanan');
     return { success: true, message: 'Layanan berhasil ditambahkan.' };
   } catch (error) {
     console.error('Create Layanan Error:', error);
@@ -35,27 +38,26 @@ export async function createLayanan(formData: FormData) {
 }
 
 export async function updateLayanan(id: number, formData: FormData) {
-    const validatedFields = LayananSchema.safeParse({
-        nama: formData.get('nama'),
-        deskripsi: formData.get('deskripsi'),
-        icon: formData.get('icon'), 
-    });
+  const validatedFields = LayananSchema.safeParse({
+    nama: formData.get('nama'),
+    deskripsi: formData.get('deskripsi'),
+    icon: formData.get('icon'),
+  });
 
-    if (!validatedFields.success) {
-        return { success: false, message: validatedFields.error.flatten().fieldErrors };
-    }
+  if (!validatedFields.success) {
+    return { success: false, message: validatedFields.error.flatten().fieldErrors };
+  }
 
-    try {
-        await prisma.layanan.update({ where: { id }, data: validatedFields.data });
-        revalidatePath('/admin/layanan');
-        revalidatePath('/layanan');
-        return { success: true, message: 'Layanan berhasil diperbarui.' };
-    } catch (error) {
-        console.error('Update Layanan Error:', error);
-        return { success: false, message: 'Database Error: Gagal memperbarui layanan.' };
-    }
+  try {
+    await prisma.layanan.update({ where: { id }, data: validatedFields.data });
+    revalidatePath('/admin/layanan');
+    revalidatePath('/layanan');
+    return { success: true, message: 'Layanan berhasil diperbarui.' };
+  } catch (error) {
+    console.error('Update Layanan Error:', error);
+    return { success: false, message: 'Database Error: Gagal memperbarui layanan.' };
+  }
 }
-
 
 export async function deleteLayanan(id: number) {
   try {
@@ -69,61 +71,21 @@ export async function deleteLayanan(id: number) {
   }
 }
 
+// --- Actions untuk Review Testimoni ---
 
-// --- Skema Validasi untuk Testimoni ---
-const TestimoniSchema = z.object({
-    namaPelanggan: z.string().min(3, 'Nama pelanggan harus diisi.'),
-    namaKucing: z.string().min(1, 'Nama kucing harus diisi.'),
-    fotoKucing: z.string().url('URL foto tidak valid.').optional().or(z.literal('')), // <-- TAMBAHKAN INI
-    kutipan: z.string().min(10, 'Kutipan testimoni harus lebih detail.'),
-});
-
-
-// --- CRUD Actions untuk Testimoni ---
-
-export async function createTestimoni(formData: FormData) {
-    const validatedFields = TestimoniSchema.safeParse({
-        namaPelanggan: formData.get('namaPelanggan'),
-        namaKucing: formData.get('namaKucing'),
-        fotoKucing: formData.get('fotoKucing'), 
-        kutipan: formData.get('kutipan'),
+export async function updateTestimoniStatus(id: number, status: 'PUBLISHED' | 'PENDING') {
+  try {
+    await prisma.testimoni.update({
+      where: { id },
+      data: { status },
     });
-
-    if (!validatedFields.success) {
-        return { success: false, message: validatedFields.error.flatten().fieldErrors };
-    }
-
-    try {
-        await prisma.testimoni.create({ data: validatedFields.data });
-        revalidatePath('/admin/testimoni');
-        revalidatePath('/#testimoni');
-        return { success: true, message: 'Testimoni berhasil ditambahkan.' };
-    } catch (error) {
-        console.error('Create Testimoni Error:', error);
-        return { success: false, message: 'Database Error: Gagal menambah testimoni.' };
-    }
-}
-
-export async function updateTestimoni(id: number, formData: FormData) {
-    const validatedFields = TestimoniSchema.safeParse({
-        namaPelanggan: formData.get('namaPelanggan'),
-        namaKucing: formData.get('namaKucing'),
-        kutipan: formData.get('kutipan'),
-    });
-
-    if (!validatedFields.success) {
-        return { success: false, message: validatedFields.error.flatten().fieldErrors };
-    }
-
-    try {
-        await prisma.testimoni.update({ where: { id }, data: validatedFields.data });
-        revalidatePath('/admin/testimoni');
-        revalidatePath('/#testimoni');
-        return { success: true, message: 'Testimoni berhasil diperbarui.' };
-    } catch (error) {
-        console.error('Update Testimoni Error:', error);
-        return { success: false, message: 'Database Error: Gagal memperbarui testimoni.' };
-    }
+    revalidatePath('/admin/testimoni');
+    revalidatePath('/#testimoni');
+    return { success: true, message: `Status testimoni berhasil diubah.` };
+  } catch (error) {
+    console.error('Update Testimoni Status Error:', error);
+    return { success: false, message: 'Gagal memperbarui status testimoni.' };
+  }
 }
 
 export async function deleteTestimoni(id: number) {
@@ -142,26 +104,61 @@ export async function deleteTestimoni(id: number) {
 const DokterSchema = z.object({
   nama: z.string().min(3, 'Nama dokter harus diisi.'),
   spesialisasi: z.string().min(5, 'Spesialisasi harus diisi.'),
-  foto: z.string().url('URL foto tidak valid.').optional().or(z.literal('')),
+  foto: z.instanceof(File).optional(),
 });
 
-// --- CRUD Actions untuk Dokter ---
+// --- Fungsi Helper untuk mengelola file ---
+const handleFileUpload = async (file: File): Promise<string> => {
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const filename = `${Date.now()}-${file.name.split('.')[0]}.webp`;
+  const savePath = path.join(process.cwd(), 'public/uploads/dokter', filename);
 
+  await mkdir(path.dirname(savePath), { recursive: true });
+
+  await sharp(buffer).webp({ quality: 80 }).toFile(savePath);
+
+  return `/uploads/dokter/${filename}`;
+};
+
+const deleteFile = async (filePath: string) => {
+  if (!filePath) return;
+  try {
+    const fullPath = path.join(process.cwd(), 'public', filePath);
+    await unlink(fullPath);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+      console.error('Error deleting file:', error);
+    }
+  }
+};
+
+// --- CRUD Actions untuk Dokter ---
 export async function createDokter(formData: FormData) {
-  const validatedFields = DokterSchema.safeParse({
+  const data = {
     nama: formData.get('nama'),
     spesialisasi: formData.get('spesialisasi'),
     foto: formData.get('foto'),
-  });
+  };
 
+  const validatedFields = DokterSchema.safeParse(data);
   if (!validatedFields.success) {
     return { success: false, message: validatedFields.error.flatten().fieldErrors };
   }
 
   try {
-    await prisma.dokter.create({ data: validatedFields.data });
+    let fotoPath: string | undefined = undefined;
+    if (validatedFields.data.foto && validatedFields.data.foto.size > 0) {
+      fotoPath = await handleFileUpload(validatedFields.data.foto);
+    }
+
+    await prisma.dokter.create({
+      data: {
+        ...validatedFields.data,
+        foto: fotoPath,
+      },
+    });
     revalidatePath('/admin/dokter');
-    revalidatePath('/#tim'); // Revalidate section tim di beranda
+    revalidatePath('/#tim');
     return { success: true, message: 'Data dokter berhasil ditambahkan.' };
   } catch (error) {
     console.error('Create Dokter Error:', error);
@@ -170,18 +167,40 @@ export async function createDokter(formData: FormData) {
 }
 
 export async function updateDokter(id: number, formData: FormData) {
-  const validatedFields = DokterSchema.safeParse({
+  const data = {
     nama: formData.get('nama'),
     spesialisasi: formData.get('spesialisasi'),
     foto: formData.get('foto'),
-  });
+  };
 
+  const validatedFields = DokterSchema.safeParse(data);
   if (!validatedFields.success) {
     return { success: false, message: validatedFields.error.flatten().fieldErrors };
   }
 
   try {
-    await prisma.dokter.update({ where: { id }, data: validatedFields.data });
+    const dokterToUpdate = await prisma.dokter.findUnique({ where: { id } });
+    if (!dokterToUpdate) {
+      return { success: false, message: 'Data dokter tidak ditemukan.' };
+    }
+
+    let fotoPath: string | undefined = dokterToUpdate.foto || undefined;
+
+    if (validatedFields.data.foto && validatedFields.data.foto.size > 0) {
+      if (dokterToUpdate.foto) {
+        await deleteFile(dokterToUpdate.foto);
+      }
+      fotoPath = await handleFileUpload(validatedFields.data.foto);
+    }
+
+    await prisma.dokter.update({
+      where: { id },
+      data: {
+        nama: validatedFields.data.nama,
+        spesialisasi: validatedFields.data.spesialisasi,
+        foto: fotoPath,
+      },
+    });
     revalidatePath('/admin/dokter');
     revalidatePath('/#tim');
     return { success: true, message: 'Data dokter berhasil diperbarui.' };
@@ -193,6 +212,11 @@ export async function updateDokter(id: number, formData: FormData) {
 
 export async function deleteDokter(id: number) {
   try {
+    const dokterToDelete = await prisma.dokter.findUnique({ where: { id } });
+    if (dokterToDelete?.foto) {
+      await deleteFile(dokterToDelete.foto);
+    }
+
     await prisma.dokter.delete({ where: { id } });
     revalidatePath('/admin/dokter');
     revalidatePath('/#tim');

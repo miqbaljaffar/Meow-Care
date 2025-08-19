@@ -2,8 +2,16 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 
-// Mengambil data profil pengguna beserta kucing dan riwayat layanan
+// Skema validasi untuk pembaruan profil
+const profileSchema = z.object({
+  nama: z.string().min(3, 'Nama harus diisi.'),
+  nomorTelepon: z.string().min(10, 'Nomor telepon tidak valid.').optional().or(z.literal('')),
+});
+
+
+// Mengambil data profil pengguna beserta kucing, riwayat, dan testimoni
 export async function getUserProfile(userId: string) {
   try {
     const user = await prisma.user.findUnique({
@@ -11,7 +19,14 @@ export async function getUserProfile(userId: string) {
       include: {
         kucing: {
           include: {
-            riwayat: true,
+            riwayat: {
+              include: {
+                testimoni: true, // <-- SERTAKAN DATA TESTIMONI
+              },
+              orderBy: {
+                tanggal: 'desc', // Urutkan riwayat terbaru di atas
+              },
+            },
           },
         },
       },
@@ -23,12 +38,38 @@ export async function getUserProfile(userId: string) {
   }
 }
 
+// FUNGSI BARU: Untuk update nama dan nomor telepon
+export async function updateUserProfile(userId: string, formData: FormData) {
+  const validatedFields = profileSchema.safeParse({
+    nama: formData.get('nama'),
+    nomorTelepon: formData.get('nomorTelepon'),
+  });
+
+  if (!validatedFields.success) {
+    return { success: false, message: 'Data tidak valid.' };
+  }
+
+  try {
+    await prisma.user.update({
+      where: { id: parseInt(userId, 10) },
+      data: {
+        nama: validatedFields.data.nama,
+        nomorTelepon: validatedFields.data.nomorTelepon,
+      },
+    });
+    revalidatePath('/profil');
+    return { success: true, message: 'Profil berhasil diperbarui.' };
+  } catch (error) {
+    return { success: false, message: 'Gagal memperbarui profil.' };
+  }
+}
+
+
 // Menambah data kucing baru
 export async function addCat(data: {
   nama: string;
   spesies: string;
   umur: number;
-  // foto?: string; // FOTO DIHAPUS
   userId: string;
 }) {
   try {
@@ -37,7 +78,6 @@ export async function addCat(data: {
         nama: data.nama,
         spesies: data.spesies,
         umur: data.umur,
-        // foto: data.foto, // FOTO DIHAPUS
         pemilik: {
           connect: {
             id: parseInt(data.userId, 10),
@@ -60,7 +100,6 @@ export async function updateCat(
     nama: string;
     spesies: string;
     umur: number;
-    // foto?: string; // FOTO DIHAPUS
   }
 ) {
   try {
@@ -79,14 +118,25 @@ export async function updateCat(
 // Menghapus data kucing
 export async function deleteCat(id: string) {
   try {
-    // Hapus dulu riwayat layanan yang terkait untuk menghindari error constraint
+    // Hapus dulu testimoni yang terkait dengan riwayat layanan kucing ini
+    await prisma.testimoni.deleteMany({
+        where: {
+            riwayatLayanan: {
+                kucingId: parseInt(id, 10)
+            }
+        }
+    });
+    
+    // Hapus riwayat layanan yang terkait
     await prisma.riwayatLayanan.deleteMany({
       where: { kucingId: parseInt(id, 10) },
     });
+    
     // Baru hapus kucingnya
     await prisma.kucing.delete({
       where: { id: parseInt(id, 10) },
     });
+    
     revalidatePath('/profil');
     return { success: true, message: 'Kucing berhasil dihapus.' };
   } catch (error) {

@@ -1,35 +1,51 @@
 'use client';
 
-import { useState } from 'react';
-import { Testimoni } from '@prisma/client';
-import { deleteTestimoni } from '@/actions/admin.actions';
-import TestimoniFormModal from '@/components/TestimoniFormModal';
-import AdminActionButtons from '@/components/AdminActionButtons';
-import { PlusCircle } from 'lucide-react';
+import { useTransition } from 'react';
+import { Testimoni, RiwayatLayanan, Kucing, User } from '@prisma/client';
+import { deleteTestimoni, updateTestimoniStatus } from '@/actions/admin.actions';
+import { CheckCircle, XCircle, Trash2, Clock } from 'lucide-react';
+import toast from 'react-hot-toast';
 
-// Ini adalah Client Component, menangani state dan event
-export default function TestimoniAdminClient({ initialTestimoni }: { initialTestimoni: Testimoni[] }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedTestimoni, setSelectedTestimoni] = useState<Testimoni | undefined>(undefined);
+// Definisikan tipe data yang lebih lengkap
+type FullTestimoni = Testimoni & {
+  riwayatLayanan: RiwayatLayanan & {
+    kucing: Kucing & {
+      pemilik: User;
+    };
+  };
+};
 
-  const handleOpenModal = (testimoni?: Testimoni) => {
-    setSelectedTestimoni(testimoni);
-    setIsModalOpen(true);
+export default function TestimoniAdminClient({ initialTestimoni }: { initialTestimoni: FullTestimoni[] }) {
+  const [isPending, startTransition] = useTransition();
+
+  const handleUpdateStatus = (id: number, status: 'PUBLISHED' | 'PENDING') => {
+    startTransition(async () => {
+      const result = await updateTestimoniStatus(id, status);
+      if (result.success) {
+        toast.success(result.message);
+      } else {
+        toast.error(result.message);
+      }
+    });
   };
 
-  const handleCloseModal = () => {
-    setSelectedTestimoni(undefined);
-    setIsModalOpen(false);
+  const handleDelete = (id: number) => {
+    if (window.confirm('Apakah Anda yakin ingin menghapus testimoni ini?')) {
+      startTransition(async () => {
+        const result = await deleteTestimoni(id);
+        if (result.success) {
+          toast.success(result.message);
+        } else {
+          toast.error(result.message);
+        }
+      });
+    }
   };
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Manajemen Testimoni</h1>
-        <button onClick={() => handleOpenModal()} className="flex items-center gap-2 rounded-lg bg-cyan-500 px-4 py-2 text-white shadow-md transition-colors hover:bg-cyan-600">
-          <PlusCircle size={20} />
-          <span>Tambah Testimoni</span>
-        </button>
+        <h1 className="text-3xl font-bold">Review Testimoni Pelanggan</h1>
       </div>
 
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
@@ -38,6 +54,7 @@ export default function TestimoniAdminClient({ initialTestimoni }: { initialTest
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pelanggan & Kucing</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kutipan</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Aksi</th>
             </tr>
           </thead>
@@ -45,28 +62,43 @@ export default function TestimoniAdminClient({ initialTestimoni }: { initialTest
             {initialTestimoni.map((item) => (
               <tr key={item.id}>
                 <td className="px-6 py-4">
-                  <div className="font-medium">{item.namaPelanggan}</div>
-                  <div className="text-sm text-gray-500">{item.namaKucing}</div>
+                  <div className="font-medium">{item.riwayatLayanan.kucing.pemilik.nama}</div>
+                  <div className="text-sm text-gray-500">{item.riwayatLayanan.kucing.nama}</div>
                 </td>
-                {/* PERBAIKAN: Menggunakan &quot; untuk kutipan */}
-                <td className="px-6 py-4 italic text-gray-600">&quot;{item.kutipan}&quot;</td>
+                <td className="px-6 py-4 italic text-gray-600 max-w-sm">"{item.kutipan}"</td>
+                <td className="px-6 py-4">
+                  <span className={`inline-flex items-center gap-1.5 px-2 py-1 text-xs font-semibold rounded-full ${
+                      item.status === 'PUBLISHED'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-yellow-100 text-yellow-800'
+                    }`}
+                  >
+                    {item.status === 'PUBLISHED' ? <CheckCircle size={12} /> : <Clock size={12} />}
+                    {item.status}
+                  </span>
+                </td>
                 <td className="px-6 py-4 text-right">
-                  <AdminActionButtons
-                    onEdit={() => handleOpenModal(item)}
-                    onDelete={() => deleteTestimoni(item.id)}
-                  />
+                  <div className="flex items-center justify-end gap-3">
+                    {item.status === 'PENDING' && (
+                      <button onClick={() => handleUpdateStatus(item.id, 'PUBLISHED')} disabled={isPending} className="text-green-500 hover:text-green-700 disabled:text-gray-400" aria-label="Setujui">
+                        <CheckCircle size={18} />
+                      </button>
+                    )}
+                     {item.status === 'PUBLISHED' && (
+                      <button onClick={() => handleUpdateStatus(item.id, 'PENDING')} disabled={isPending} className="text-yellow-500 hover:text-yellow-700 disabled:text-gray-400" aria-label="Batal Publikasi">
+                        <XCircle size={18} />
+                      </button>
+                    )}
+                    <button onClick={() => handleDelete(item.id)} disabled={isPending} className="text-red-500 hover:text-red-700 disabled:text-gray-400" aria-label="Hapus">
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
-      <TestimoniFormModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        testimoniToEdit={selectedTestimoni}
-      />
     </div>
   );
 }

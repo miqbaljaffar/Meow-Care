@@ -12,16 +12,18 @@ datasource db {
 
 // Model untuk Pengguna
 model User {
-  id        Int      @id @default(autoincrement())
-  nama      String
-  email     String   @unique
-  password  String
-  role      String   @default("USER") // Tambahkan baris ini
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            Int      @id @default(autoincrement())
+  nama          String
+  email         String   @unique
+  password      String
+  role          String   @default("USER")
+  nomorTelepon  String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   kucing  Kucing[]
   artikel Artikel[]
+  bookings Booking[] // Relasi baru ke Booking
 }
 
 // Model untuk Kucing
@@ -34,43 +36,34 @@ model Kucing {
   pemilikId Int
 
   riwayat RiwayatLayanan[]
+  bookings Booking[] // Relasi baru ke Booking
 }
 
 // Model untuk Riwayat Layanan
 model RiwayatLayanan {
-  id           Int      @id @default(autoincrement())
-  kucing       Kucing   @relation(fields: [kucingId], references: [id])
+  id           Int        @id @default(autoincrement())
+  kucing       Kucing     @relation(fields: [kucingId], references: [id])
   kucingId     Int
   jenisLayanan String
   catatan      String?
-  tanggal      DateTime @default(now())
-}
-
-
-model Antrian {
-  id            Int      @id @default(autoincrement())
-  namaPemilik   String
-  namaKucing    String
-  nomorTelepon  String
-  jenisLayanan  String
-  nomorAntrian  Int      @unique
-  status        String   @default("Menunggu")
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  tanggal      DateTime   @default(now())
+  testimoni    Testimoni?
+  booking      Booking? // Relasi baru ke Booking
 }
 
 model Artikel {
-  id          Int      @id @default(autoincrement())
-  slug        String   @unique // Untuk URL yang rapi, cth: /blog/cara-merawat-kucing
-  judul       String
-  konten      String   // Konten artikel dalam format Markdown
-  kutipan     String   // Kutipan singkat untuk ditampilkan di daftar artikel
-  gambar      String?  // URL gambar utama (opsional)
-  status      String   @default("draf") // "draf" atau "terbit"
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  penulis     User     @relation(fields: [penulisId], references: [id])
-  penulisId   Int
+  id        Int      @id @default(autoincrement())
+  slug      String   @unique
+  judul     String
+  konten    String
+  kutipan   String
+  kategori  String?
+  gambar    String?
+  status    String   @default("draf")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  penulis   User     @relation(fields: [penulisId], references: [id])
+  penulisId Int
 }
 
 // Model untuk Layanan
@@ -78,27 +71,77 @@ model Layanan {
   id        Int      @id @default(autoincrement())
   nama      String   @unique
   deskripsi String
-  icon      String? // Nama icon dari lucide-react
+  icon      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 // Model untuk Testimoni
 model Testimoni {
-  id              Int      @id @default(autoincrement())
-  namaPelanggan   String
-  namaKucing      String
-  fotoKucing      String? // <-- TAMBAHKAN BARIS INI
-  kutipan         String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id               Int      @id @default(autoincrement())
+  kutipan          String
+  status           String   @default("PENDING") // Status: PENDING, PUBLISHED
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  riwayatLayanan   RiwayatLayanan @relation(fields: [riwayatLayananId], references: [id])
+  riwayatLayananId Int      @unique
 }
 
+// Model untuk Dokter
 model Dokter {
   id           Int      @id @default(autoincrement())
   nama         String
   spesialisasi String
-  foto         String? // URL gambar dokter
+  foto         String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  jadwal       JadwalDokter[] // Relasi baru ke JadwalDokter
+  bookings     Booking[]      // Relasi baru ke Booking
+}
+
+// --- MODEL BARU UNTUK SISTEM BOOKING ---
+
+// Model untuk Jadwal Kerja Dokter
+model JadwalDokter {
+  id        Int      @id @default(autoincrement())
+  dokter    Dokter   @relation(fields: [dokterId], references: [id])
+  dokterId  Int
+  hari      String   // Contoh: "Senin", "Selasa"
+  jamMulai  String   // Contoh: "09:00"
+  jamSelesai String  // Contoh: "17:00"
+  isLibur   Boolean  @default(false)
+  
+  slotWaktu SlotWaktu[]
+}
+
+// Model untuk Slot Waktu yang Tersedia
+model SlotWaktu {
+  id          Int       @id @default(autoincrement())
+  jadwal      JadwalDokter @relation(fields: [jadwalId], references: [id])
+  jadwalId    Int
+  waktuMulai  DateTime
+  waktuSelesai DateTime
+  isBooked    Boolean   @default(false)
+  
+  booking   Booking?
+}
+
+// Model untuk Booking yang dibuat oleh User
+model Booking {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  kucing    Kucing   @relation(fields: [kucingId], references: [id])
+  kucingId  Int
+  dokter    Dokter   @relation(fields: [dokterId], references: [id])
+  dokterId  Int
+  slot      SlotWaktu @relation(fields: [slotId], references: [id])
+  slotId    Int      @unique // Setiap slot hanya bisa di-booking sekali
+  layanan   String
+  status    String   @default("DIJADWALKAN") // DIJADWALKAN, CHECK_IN, SELESAI, BATAL
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  riwayatLayanan   RiwayatLayanan? @relation(fields: [riwayatLayananId], references: [id])
+  riwayatLayananId Int?            @unique
 }

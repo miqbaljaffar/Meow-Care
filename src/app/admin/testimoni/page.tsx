@@ -1,12 +1,22 @@
 import prisma from '@/lib/prisma';
 import TestimoniAdminClient from '@/components/TestimoniAdminClient';
 
-// Ini adalah Server Component, tugasnya hanya mengambil data
 export default async function AdminTestimoniPage() {
+  // Ambil data testimoni beserta relasinya
   const testimoni = await prisma.testimoni.findMany({
     orderBy: { createdAt: 'desc' },
+    include: {
+      riwayatLayanan: {
+        include: {
+          kucing: {
+            include: {
+              pemilik: true,
+            },
+          },
+        },
+      },
+    },
   });
 
-  // Melempar data ke Client Component untuk interaktivitas
-  return <TestimoniAdminClient initialTestimoni={testimoni} />;
+  return <TestimoniAdminClient initialTestimoni={testimoni as any} />;
 }

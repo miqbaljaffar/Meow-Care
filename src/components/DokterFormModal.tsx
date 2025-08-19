@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useRef } from 'react';
 import { Dokter } from '@prisma/client';
 import { createDokter, updateDokter } from '@/actions/admin.actions';
 import toast from 'react-hot-toast';
+import Image from 'next/image';
 
 interface DokterFormModalProps {
   isOpen: boolean;
@@ -13,7 +14,20 @@ interface DokterFormModalProps {
 
 export default function DokterFormModal({ isOpen, onClose, dokterToEdit }: DokterFormModalProps) {
   const [isPending, setIsPending] = useState(false);
+  const [preview, setPreview] = useState<string | null>(dokterToEdit?.foto || null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const isEditMode = !!dokterToEdit;
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -47,7 +61,8 @@ export default function DokterFormModal({ isOpen, onClose, dokterToEdit }: Dokte
         <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">
           {isEditMode ? 'Edit Data Dokter' : 'Tambah Dokter Baru'}
         </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Tambahkan enctype untuk upload file */}
+        <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
           <div>
             <label htmlFor="nama" className="block text-sm font-medium text-gray-700">Nama Dokter</label>
             <input
@@ -70,16 +85,27 @@ export default function DokterFormModal({ isOpen, onClose, dokterToEdit }: Dokte
               required
             />
           </div>
-           <div>
-            <label htmlFor="foto" className="block text-sm font-medium text-gray-700">URL Foto</label>
-            <input
-              id="foto"
-              name="foto"
-              type="url"
-              defaultValue={dokterToEdit?.foto || ''}
-              placeholder="https://example.com/foto.jpg"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-cyan-500 focus:ring-cyan-500"
-            />
+          <div>
+            <label htmlFor="foto" className="block text-sm font-medium text-gray-700">Foto Dokter</label>
+            <div className="mt-2 flex items-center gap-4">
+              {preview ? (
+                <Image src={preview} alt="Preview" width={64} height={64} className="h-16 w-16 rounded-full object-cover" />
+              ) : (
+                <div className="h-16 w-16 rounded-full bg-gray-100"></div>
+              )}
+              <input
+                id="foto"
+                name="foto"
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageChange}
+                accept="image/png, image/jpeg, image/jpg"
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-50 file:text-cyan-700 hover:file:bg-cyan-100"
+              />
+            </div>
+            {isEditMode && !preview && (
+              <p className="text-xs text-gray-500 mt-1">Kosongkan jika tidak ingin mengubah foto.</p>
+            )}
           </div>
           <div className="flex justify-end gap-4 pt-4">
             <button type="button" onClick={onClose} disabled={isPending} className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">

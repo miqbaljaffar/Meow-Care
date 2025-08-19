@@ -1,21 +1,29 @@
-import { auth } from '@/app/api/auth/[...nextauth]/route';
-import { NextRequest, NextResponse } from 'next/server';
+// src/middleware.ts
 
-export default auth((req: NextRequest) => {
+import { auth } from '@/app/api/auth/[...nextauth]/route';
+import { NextResponse } from 'next/server';
+
+export default auth((req) => {
+  // `req.auth` sudah secara otomatis memiliki tipe yang benar dari NextAuth.js
   const { pathname } = req.nextUrl;
   const session = req.auth;
 
   // Jika mencoba mengakses halaman admin
   if (pathname.startsWith('/admin')) {
-    // Jika tidak ada token atau role bukan ADMIN, redirect ke login
-    if (!session || (session.user as any).role !== 'ADMIN') {
-      return NextResponse.redirect(new URL('/login', req.url));
+    const userRole = session?.user?.role;
+
+    // Jika tidak ada sesi (session) atau role bukan ADMIN, redirect ke halaman login
+    if (!session || userRole !== 'ADMIN') {
+      const loginUrl = new URL('/login', req.url);
+      return NextResponse.redirect(loginUrl);
     }
   }
 
+  // Lanjutkan ke request berikutnya jika lolos pengecekan
   return NextResponse.next();
 });
 
+// Konfigurasi ini tetap sama
 export const config = {
-  matcher: ['/admin/:path*'], // Terapkan middleware ini pada semua rute di bawah /admin
+  matcher: ['/admin/:path*'],
 };

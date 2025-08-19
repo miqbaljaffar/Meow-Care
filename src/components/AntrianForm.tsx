@@ -1,61 +1,149 @@
-// src/components/AntrianForm.tsx
 'use client';
 
 import { useState, useTransition } from 'react';
 import { createAntrian } from '@/actions/antrian.actions';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import Link from 'next/link';
 
-// Tambahkan jenisLayanan pada props
-export default function AntrianForm({ jenisLayanan }: { jenisLayanan: string }) {
+// Definisikan tipe props yang baru
+interface KucingProfil {
+  id: number;
+  nama: string;
+}
+
+interface UserData {
+  nama: string;
+  nomorTelepon: string | null;
+  kucing: KucingProfil[];
+}
+
+interface AntrianFormProps {
+  jenisLayanan: string;
+  userData: UserData | null; // Bisa null jika user adalah tamu
+}
+
+export default function AntrianForm({ jenisLayanan, userData }: AntrianFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  
+  // Jika user login tapi belum punya kucing, tampilkan pesan
+  if (userData && userData.kucing.length === 0) {
+    return (
+        <div className="bg-white p-8 rounded-lg shadow-md text-center">
+            <h3 className="text-xl font-bold text-gray-800 mb-4">Anda Belum Mendaftarkan Kucing</h3>
+            <p className="text-gray-600 mb-6">
+                Untuk mendaftar layanan, Anda perlu menambahkan data kucing Anda terlebih dahulu di halaman profil.
+            </p>
+            <Link href="/profil" className="px-6 py-3 bg-brand-green text-white font-bold rounded-full shadow-md hover:bg-brand-green-dark transition-colors">
+                Ke Halaman Profil
+            </Link>
+        </div>
+    )
+  }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
+
+    // Dapatkan nama kucing dari dropdown jika ada, jika tidak dari input teks
+    const namaKucingTerpilih = userData 
+      ? formData.get('kucingId') 
+        ? userData.kucing.find(k => k.id.toString() === formData.get('kucingId'))?.nama
+        : ''
+      : formData.get('namaKucing') as string;
+
     const data = {
       namaPemilik: formData.get('namaPemilik') as string,
-      namaKucing: formData.get('namaKucing') as string,
+      namaKucing: namaKucingTerpilih || '',
       nomorTelepon: formData.get('nomorTelepon') as string,
-      jenisLayanan: formData.get('jenisLayanan') as string, // <-- Ambil dari form
+      jenisLayanan: formData.get('jenisLayanan') as string,
     };
 
+    if (!data.namaKucing) {
+      toast.error("Silakan pilih kucing Anda.");
+      return;
+    }
+
     startTransition(async () => {
-      const result = await createAntrian(data); // <-- Kirim data lengkap
+      const result = await createAntrian(data);
       if (result.success) {
         toast.success(`Pendaftaran berhasil! Nomor antrian Anda: ${result.data?.nomorAntrian}`);
-        router.push(`/antrian/${result.data?.id}`); // Arahkan ke halaman detail antrian
-    } else {
-      toast.error(result.message || 'Terjadi kesalahan.');
-      setError(result.message || 'Terjadi kesalahan.');
-    }
+        router.push(`/antrian/${result.data?.id}`);
+      } else {
+        toast.error(result.message || 'Terjadi kesalahan.');
+        setError(result.message || 'Terjadi kesalahan.');
+      }
     });
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-lg shadow-md">
-      {/* Tampilkan layanan yang dipilih */}
       <div className="bg-emerald-50 border-l-4 border-brand-green p-4 rounded-md">
         <p className="text-sm text-gray-600">Anda mendaftar untuk layanan:</p>
         <p className="font-bold text-lg text-gray-800">{jenisLayanan}</p>
       </div>
 
-      {/* Tambahkan input tersembunyi untuk menyimpan jenisLayanan */}
       <input type="hidden" name="jenisLayanan" value={jenisLayanan} />
 
+      {/* Input Nama Pemilik */}
       <div>
         <label htmlFor="namaPemilik" className="block text-sm font-medium text-gray-700">Nama Pemilik</label>
-        <input type="text" name="namaPemilik" id="namaPemilik" required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2" />
+        <input 
+          type="text" 
+          name="namaPemilik" 
+          id="namaPemilik" 
+          required 
+          defaultValue={userData?.nama || ''}
+          readOnly={!!userData} // Kunci input jika user sudah login
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2 bg-gray-100 read-only:cursor-not-allowed" 
+        />
       </div>
+
+      {/* Input Nama Kucing (Dropdown atau Teks) */}
       <div>
         <label htmlFor="namaKucing" className="block text-sm font-medium text-gray-700">Nama Kucing</label>
-        <input type="text" name="namaKucing" id="namaKucing" required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2" />
+        {userData ? (
+          <select
+            name="kucingId"
+            id="kucingId"
+            required
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2"
+          >
+            <option value="">-- Pilih Kucing --</option>
+            {userData.kucing.map(k => (
+              <option key={k.id} value={k.id}>{k.nama}</option>
+            ))}
+          </select>
+        ) : (
+          <input 
+            type="text" 
+            name="namaKucing" 
+            id="namaKucing" 
+            required 
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2" 
+          />
+        )}
       </div>
+
+      {/* Input Nomor Telepon */}
        <div>
         <label htmlFor="nomorTelepon" className="block text-sm font-medium text-gray-700">Nomor Telepon</label>
-        <input type="tel" name="nomorTelepon" id="nomorTelepon" required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2" />
+        <input 
+          type="tel" 
+          name="nomorTelepon" 
+          id="nomorTelepon" 
+          required 
+          defaultValue={userData?.nomorTelepon || ''}
+          readOnly={!!userData?.nomorTelepon} // Kunci jika nomor sudah ada
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2 read-only:bg-gray-100 read-only:cursor-not-allowed" 
+        />
+        {userData && !userData.nomorTelepon && (
+            <p className="text-xs text-gray-500 mt-1">
+                Anda dapat menambahkan nomor telepon di <Link href="/profil" className="underline text-cyan-600">halaman profil</Link> agar terisi otomatis.
+            </p>
+        )}
       </div>
       
       {error && <p className="text-sm text-red-500">{error}</p>}
@@ -67,6 +155,16 @@ export default function AntrianForm({ jenisLayanan }: { jenisLayanan: string }) 
       >
         {isPending ? 'Mendaftarkan...' : 'Dapatkan Nomor Antrian'}
       </button>
+
+      {!userData && (
+        <p className="text-center text-sm text-gray-600">
+          Sudah punya akun?{' '}
+          <Link href="/login" className="font-medium text-brand-green hover:underline">
+            Login di sini
+          </Link>
+          {' '}untuk proses lebih cepat.
+        </p>
+      )}
     </form>
   );
 }

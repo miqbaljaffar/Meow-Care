@@ -1,4 +1,4 @@
-'use server'; // Wajib ada di baris paling atas
+'use server'; 
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
@@ -25,10 +25,10 @@ export async function createAntrian(data: {
       },
     });
 
-    revalidatePath('/'); 
-    revalidatePath('/admin'); 
+    revalidatePath('/');
+    revalidatePath('/admin');
     return { success: true, data: antrianBaru };
-  } catch (error) {
+  } catch { // Hapus variabel 'error'
     return { success: false, message: 'Gagal membuat antrian.' };
   }
 }
@@ -52,7 +52,7 @@ export async function updateStatusAntrian(id: number, status: 'Dilayani' | 'Sele
     revalidatePath('/');
     revalidatePath('/admin');
     return { success: true };
-  } catch (error) {
+  } catch { // Hapus variabel 'error'
     return { success: false, message: 'Gagal update status.' };
   }
 }

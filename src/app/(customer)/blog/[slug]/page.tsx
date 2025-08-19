@@ -15,7 +15,12 @@ const getArtikelBySlug = cache(async (slug: string) => {
   return artikel;
 });
 
-export default async function DetailArtikelPage({ params }: { params: { slug: string } }) {
+// Definisikan tipe Props secara eksplisit untuk konsistensi dan pencegahan error
+type PageProps = {
+  params: { slug: string };
+};
+
+export default async function DetailArtikelPage({ params }: PageProps) {
   const artikel = await getArtikelBySlug(params.slug);
 
   if (!artikel) {
@@ -63,7 +68,7 @@ export default async function DetailArtikelPage({ params }: { params: { slug: st
 }
 
 // Opsional: Generate metadata untuk SEO
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: PageProps) {
     const artikel = await getArtikelBySlug(params.slug);
     if (!artikel) {
         return { title: 'Artikel tidak ditemukan' }

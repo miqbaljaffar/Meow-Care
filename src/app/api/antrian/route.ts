@@ -8,7 +8,7 @@ export async function GET() {
             orderBy: { createdAt: 'asc' }
         });
         return NextResponse.json(antrian);
-    } catch (error) {
+    } catch { // Hapus variabel 'error'
         return NextResponse.json({ error: 'Gagal mengambil data' }, { status: 500 });
     }
 }
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
 
         return NextResponse.json(newAntrian, { status: 201 });
 
-    } catch (error) {
+    } catch { // Hapus variabel 'error'
         return NextResponse.json({ error: 'Gagal membuat antrian' }, { status: 500 });
     }
 }
