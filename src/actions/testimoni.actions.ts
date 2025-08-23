@@ -33,11 +33,11 @@ export async function createTestimoniForCustomer(formData: FormData) {
       data: {
         kutipan: validatedFields.data.kutipan,
         riwayatLayananId: validatedFields.data.riwayatLayananId,
-        status: 'PENDING',
+        status: 'PENDING', // Status default saat customer submit
       },
     });
 
-    revalidatePath('/profil');
+    revalidatePath('/profil'); // Refresh halaman profil setelah submit
     return { success: true, message: 'Terima kasih! Testimoni Anda akan kami review.' };
   } catch (error) {
     console.error('Create Testimoni Error:', error);

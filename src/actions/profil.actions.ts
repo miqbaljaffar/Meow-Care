@@ -140,8 +140,6 @@ export async function deleteCat(id: string) {
     revalidatePath('/profil');
     return { success: true, message: 'Kucing berhasil dihapus.' };
   } catch (error) {
-    // Variabel 'error' masih digunakan di sini untuk logging, jadi biarkan saja.
-    // ESLint warning ini tidak akan menghentikan proses build.
     console.error('Error deleting cat:', error);
     return { success: false, message: 'Gagal menghapus kucing.' };
   }

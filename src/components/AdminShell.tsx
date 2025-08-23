@@ -8,7 +8,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="flex min-h-screen bg-[#f4f7f6]"> {/* Menggunakan warna bg-admin-bg */}
       {/* Sidebar untuk desktop */}
       <div className="hidden lg:flex lg:flex-shrink-0">
         <AdminSidebar />
@@ -18,13 +18,13 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
       {isSidebarOpen && (
         <div className="fixed inset-0 z-40 flex lg:hidden">
           <div className="fixed inset-0 bg-black opacity-50" onClick={() => setIsSidebarOpen(false)}></div>
-          <div className="relative flex-1 flex flex-col max-w-xs w-full bg-gray-800">
+          <div className="relative flex-1 flex flex-col max-w-xs w-full bg-white">
              <div className="absolute top-0 right-0 -mr-12 pt-2">
               <button
                 onClick={() => setIsSidebarOpen(false)}
                 className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
               >
-                <X className="h-6 w-6 text-white" />
+                <X className="h-6 w-6 text-gray-800" />
               </button>
             </div>
             <AdminSidebar />
@@ -40,7 +40,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
                <Menu className="h-6 w-6" />
              </button>
            </div>
-           <div className="py-6 px-4 sm:px-6 lg:px-8">
+           <div className="py-8 px-4 sm:px-6 lg:px-10">
              {children}
            </div>
         </main>

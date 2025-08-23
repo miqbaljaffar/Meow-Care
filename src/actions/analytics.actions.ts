@@ -1,7 +1,7 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { differenceInMinutes } from 'date-fns';
+import { differenceInMinutes, subDays, startOfDay, endOfDay } from 'date-fns';
 
 /**
  * Mengambil statistik dasar untuk dasbor analitik.
@@ -56,6 +56,29 @@ export async function getAnalyticsData() {
       }, 0);
       totalWaktuTunggu = Math.round(totalMenit / antrianSelesai.length);
     }
+    
+    // 4. DATA BARU: Menghitung tren kunjungan 7 hari terakhir
+    const trendData = [];
+    for (let i = 6; i >= 0; i--) {
+        const date = subDays(new Date(), i);
+        const start = startOfDay(date);
+        const end = endOfDay(date);
+
+        const count = await prisma.antrian.count({
+            where: {
+                createdAt: {
+                    gte: start,
+                    lte: end,
+                },
+            },
+        });
+
+        trendData.push({
+            date: date.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric' }),
+            'Jumlah Kunjungan': count,
+        });
+    }
+
 
     return {
       success: true,
@@ -70,6 +93,7 @@ export async function getAnalyticsData() {
             jumlah: item._count.jenisLayanan
         })),
         rataRataWaktuTunggu: totalWaktuTunggu, // dalam menit
+        trenKunjungan: trendData, // <-- Tambahkan data baru
       },
     };
   } catch (error) {

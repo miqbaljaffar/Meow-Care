@@ -6,7 +6,7 @@ import { Cake, Cat, Pencil, Trash2, History, ChevronDown, MessageSquarePlus } fr
 import { deleteCat } from '@/actions/profil.actions';
 import CatFormModal from './CatFormModal';
 import toast from 'react-hot-toast';
-import CustomerTestimoniModal from './CustomerTestimoniModal';
+import CustomerTestimoniModal from './CustomerTestimoniModal'; // <-- IMPORT BARU
 
 // Impor tipe dari file page.tsx
 import { KucingWithRiwayat } from '@/app/(customer)/profil/page';
@@ -18,6 +18,7 @@ interface CatCardProps {
 export default function CatCard({ kucing }: CatCardProps) {
   const [isCatModalOpen, setIsCatModalOpen] = useState(false);
   const [isHistoryVisible, setIsHistoryVisible] = useState(false);
+  // --- STATE BARU UNTUK MODAL TESTIMONI ---
   const [selectedRiwayat, setSelectedRiwayat] = useState<RiwayatLayanan | null>(null);
 
   const handleDelete = async () => {
@@ -34,6 +35,7 @@ export default function CatCard({ kucing }: CatCardProps) {
   return (
     <>
       <div className="group relative flex flex-col rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-300 hover:border-brand-green hover:shadow-lg">
+        {/* ... (bagian info kucing tidak berubah) ... */}
         <div className="flex flex-col">
           <h3 className="text-2xl font-bold text-gray-800">{kucing.nama}</h3>
           <div className="mt-4 space-y-3 text-gray-600">
@@ -74,6 +76,7 @@ export default function CatCard({ kucing }: CatCardProps) {
                     <p className="mt-1"><strong>Layanan:</strong> {riwayat.jenisLayanan}</p>
                     {riwayat.catatan && (<p><strong>Catatan:</strong> {riwayat.catatan}</p>)}
                     
+                    {/* --- LOGIKA BARU UNTUK TESTIMONI --- */}
                     <div className="mt-2 pt-2 border-t border-gray-200">
                       {riwayat.testimoni ? (
                         <p className="text-xs text-green-600 italic">Terima kasih atas ulasan Anda!</p>
@@ -99,6 +102,7 @@ export default function CatCard({ kucing }: CatCardProps) {
 
       <CatFormModal isOpen={isCatModalOpen} onClose={() => setIsCatModalOpen(false)} userId={kucing.pemilikId.toString()} kucingToEdit={kucing} />
       
+      {/* --- RENDER MODAL TESTIMONI --- */}
       {selectedRiwayat && (
         <CustomerTestimoniModal 
           isOpen={!!selectedRiwayat} 

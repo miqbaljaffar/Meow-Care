@@ -1,4 +1,4 @@
-import AdminShell from '@/components/AdminShell'; // Komponen baru
+import AdminShell from '@/components/AdminShell';
 import { ReactNode } from 'react';
 
 export default function AdminLayout({ children }: { children: ReactNode }) {

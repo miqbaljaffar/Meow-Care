@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🐾 MeowCare – Solusi Digital Klinik Hewan
 
-## Getting Started
+![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat\&logo=nextdotjs)
+![TypeScript](https://img.shields.io/badge/TypeScript-blue?style=flat\&logo=typescript)
+![Prisma](https://img.shields.io/badge/Prisma-ORM-green?style=flat\&logo=prisma)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?style=flat\&logo=tailwind-css)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=flat)
 
-First, run the development server:
+MeowCare adalah aplikasi web modern untuk **klinik hewan** dengan fokus pada:
+✅ *User Experience* pelanggan yang nyaman
+✅ Manajemen admin yang efisien
+✅ Skalabilitas & performa tinggi
+
+---
+
+## ✨ Fitur Utama
+
+### 👩‍⚕️ Portal Pelanggan
+
+* 🔐 **Autentikasi aman** dengan NextAuth.js
+* ⏱ **Antrian online real-time** dengan WebSocket
+* 🐱 **Manajemen profil & riwayat medis kucing**
+* 📰 **Blog kesehatan hewan** dengan pencarian & filter
+* ⭐ **Testimoni & layanan klinik**
+
+### 🛠️ Dasbor Admin
+
+* 📋 **Manajemen antrian** (update status real-time)
+* 📑 **CMS mini** untuk layanan, artikel, dokter, & testimoni
+* 📊 **Analitik interaktif** (Tremor charts)
+
+---
+
+## 🛠️ Tech Stack
+
+* **Next.js 14 (App Router)**
+* **TypeScript** + **Tailwind CSS**
+* **Prisma ORM** + Database (PostgreSQL/MySQL/MongoDB)
+* **NextAuth.js** (autentikasi)
+* **Lucide React** (ikon ringan)
+* **Framer Motion** (animasi interaktif)
+* **WebSocket** (real-time)
+* **Zod** (validasi form)
+
+---
+
+## 🚀 Cara Menjalankan Proyek
+
+### 1️⃣ Prasyarat
+
+* Node.js v18+
+* npm / yarn / pnpm
+* Database aktif (misalnya PostgreSQL)
+
+### 2️⃣ Instalasi
+
+```bash
+git clone https://github.com/your-username/meowcare.git
+cd meowcare
+npm install
+```
+
+### 3️⃣ Setup Environment
+
+Buat file `.env.local` lalu isi:
+
+```env
+DATABASE_URL="..."
+NEXTAUTH_SECRET="..."
+```
+
+### 4️⃣ Migrasi Database
+
+```bash
+npx prisma migrate dev
+```
+
+### 5️⃣ Jalankan Dev Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+👉 Buka di [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📂 Struktur Folder
 
-## Learn More
+```
+/src
+ ├── actions/        # Server Actions
+ ├── app/            # Routing (App Router)
+ │    ├── (customer) # Halaman pelanggan
+ │    ├── admin      # Dasbor admin
+ │    └── api        # API routes
+ ├── components/     # Komponen UI
+ ├── lib/            # Utilitas (Prisma, helper, dll)
+ └── middleware.ts   # Middleware proteksi admin
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🤝 Kontribusi
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Kontribusi sangat terbuka!
+Silakan **fork**, buat branch baru, lalu ajukan **pull request**. 🎉
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📜 Lisensi
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Proyek ini dirilis di bawah lisensi **MIT**.
