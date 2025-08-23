@@ -32,7 +32,8 @@ export default async function TestimoniSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {testimoni.map((item) => (
               <div key={item.id} className="bg-white p-8 rounded-lg shadow-lg text-left">
-                <p className="text-gray-600 italic mb-4">"{item.kutipan}"</p>
+                {/* FIX: Use template literal */}
+                <p className="text-gray-600 italic mb-4">{`"${item.kutipan}"`}</p>
                 <div className="flex items-center">
                   <div className="relative w-12 h-12 rounded-full bg-gray-200 mr-4 overflow-hidden">
                     <Image
@@ -44,7 +45,8 @@ export default async function TestimoniSection() {
                   </div>
                   <div>
                     <p className="font-bold">{item.riwayatLayanan.kucing.pemilik.nama}</p>
-                    <p className="text-sm text-gray-500">Pemilik Kucing "{item.riwayatLayanan.kucing.nama}"</p>
+                    {/* FIX: Use template literal */}
+                    <p className="text-sm text-gray-500">{`Pemilik Kucing "${item.riwayatLayanan.kucing.nama}"`}</p>
                   </div>
                 </div>
               </div>

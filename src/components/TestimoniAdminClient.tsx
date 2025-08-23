@@ -65,7 +65,8 @@ export default function TestimoniAdminClient({ initialTestimoni }: { initialTest
                   <div className="font-medium">{item.riwayatLayanan.kucing.pemilik.nama}</div>
                   <div className="text-sm text-gray-500">{item.riwayatLayanan.kucing.nama}</div>
                 </td>
-                <td className="px-6 py-4 italic text-gray-600 max-w-sm">"{item.kutipan}"</td>
+                {/* FIX: Use template literal to avoid unescaped entities */}
+                <td className="px-6 py-4 italic text-gray-600 max-w-sm">{`"${item.kutipan}"`}</td>
                 <td className="px-6 py-4">
                   <span className={`inline-flex items-center gap-1.5 px-2 py-1 text-xs font-semibold rounded-full ${
                       item.status === 'PUBLISHED'

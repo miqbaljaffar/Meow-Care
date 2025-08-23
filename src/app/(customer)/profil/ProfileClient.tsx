@@ -1,38 +1,21 @@
 'use client';
 
-import { useState } from 'react';
 import { Cat, PawPrint, User as UserIcon, Phone, Mail } from 'lucide-react';
 import CatCard from '@/components/CatCard';
 import AddCatButton from '@/components/AddCatButton';
 import ProfileEditButton from '@/components/ProfileEditButton';
 import { UserProfile, KucingWithRiwayat } from './page'; 
 
+// FIX: Renamed prop to 'user' for clarity
 interface ProfileClientProps {
-  initialUser: UserProfile;
+  user: UserProfile;
 }
 
-export default function ProfileClient({ initialUser }: ProfileClientProps) {
-  const [user, setUser] = useState<UserProfile>(initialUser);
-
-  // Fungsi untuk me-refresh data user dari server
-  const refreshProfile = async () => {
-    try {
-      // Anda perlu membuat endpoint API atau server action untuk mengambil data user terbaru
-      const response = await fetch(`/api/user/${user.id}`); // Contoh endpoint
-      if (response.ok) {
-        const updatedUser = await response.json();
-        setUser(updatedUser);
-      }
-    } catch (error) {
-      console.error("Gagal refresh profil:", error);
-    }
-  };
-
-
+// FIX: Removed useState and used the 'user' prop directly
+export default function ProfileClient({ user }: ProfileClientProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8 md:py-12">
-        {/* Header Profil yang Didesain Ulang */}
         <header className="relative mb-12 overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500 to-brand-green p-8 text-white shadow-lg">
            <div className="absolute -top-10 -right-10 h-48 w-48 text-white/10">
              <PawPrint className="h-full w-full" strokeWidth={1} />
@@ -58,7 +41,6 @@ export default function ProfileClient({ initialUser }: ProfileClientProps) {
            </div>
          </header>
 
-        {/* Daftar Kucing */}
         <main className="rounded-2xl bg-white p-6 shadow-subtle md:p-8">
           <div className="flex flex-col items-start justify-between gap-4 border-b border-gray-200 pb-6 sm:flex-row sm:items-center">
             <div className="flex items-center gap-4">

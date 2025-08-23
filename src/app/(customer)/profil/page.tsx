@@ -35,5 +35,5 @@ export default async function ProfilPage() {
   }
 
   // Kirim data user ke Client Component
-  return <ProfileClient initialUser={user} />;
+  return <ProfileClient user={user} />;
 }

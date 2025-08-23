@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Kucing, RiwayatLayanan } from '@prisma/client';
+import { RiwayatLayanan } from '@prisma/client';
 import { Cake, Cat, Pencil, Trash2, History, ChevronDown, MessageSquarePlus } from 'lucide-react';
 import { deleteCat } from '@/actions/profil.actions';
 import CatFormModal from './CatFormModal';

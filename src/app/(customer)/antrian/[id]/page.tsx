@@ -1,7 +1,13 @@
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { Ticket, Users, Clock } from 'lucide-react';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
+
+// FINAL ATTEMPT: Defining the most complete and explicit props type
+type PageProps = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
 async function getDetailAntrian(id: number) {
   const antrian = await prisma.antrian.findUnique({
@@ -16,7 +22,7 @@ async function getDetailAntrian(id: number) {
     where: {
       status: 'Menunggu',
       createdAt: {
-        lt: antrian.createdAt, // Perbandingan berdasarkan waktu pembuatan untuk akurasi
+        lt: antrian.createdAt,
       },
     },
   });
@@ -24,11 +30,7 @@ async function getDetailAntrian(id: number) {
   return { ...antrian, antrianDiDepan };
 }
 
-type Props = {
-  params: { id: string };
-};
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const id = parseInt(params.id, 10);
   if (isNaN(id)) {
     return {
@@ -50,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function HalamanStatusAntrian({ params }: Props) {
+export default async function HalamanStatusAntrian({ params }: PageProps) {
   const id = parseInt(params.id, 10);
   if (isNaN(id)) {
     notFound();
@@ -62,7 +64,6 @@ export default async function HalamanStatusAntrian({ params }: Props) {
     notFound();
   }
 
-  // Menentukan warna dan teks status
   const getStatusInfo = (status: string) => {
     switch (status) {
       case 'Menunggu':

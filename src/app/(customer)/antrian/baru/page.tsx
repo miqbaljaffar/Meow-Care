@@ -1,9 +1,8 @@
 import AntrianForm from '@/components/AntrianForm';
 import { Suspense } from 'react';
-import { Stethoscope, User } from 'lucide-react';
+import { Stethoscope } from 'lucide-react';
 import { auth } from '@/app/api/auth/[...nextauth]/route';
 import { getUserProfile } from '@/actions/profil.actions';
-import Link from 'next/link';
 
 // Definisikan tipe untuk user dan kucing
 interface KucingProfil {
