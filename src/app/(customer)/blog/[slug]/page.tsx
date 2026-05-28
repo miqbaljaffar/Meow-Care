@@ -15,13 +15,15 @@ const getArtikelBySlug = cache(async (slug: string) => {
   return artikel;
 });
 
-// Definisikan tipe Props secara eksplisit untuk konsistensi dan pencegahan error
+// PERUBAHAN 1: Ubah params menjadi Promise
 type PageProps = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 export default async function DetailArtikelPage({ params }: PageProps) {
-  const artikel = await getArtikelBySlug(params.slug);
+  // PERUBAHAN 2: Await params sebelum digunakan
+  const resolvedParams = await params;
+  const artikel = await getArtikelBySlug(resolvedParams.slug);
 
   if (!artikel) {
     notFound();
@@ -67,9 +69,12 @@ export default async function DetailArtikelPage({ params }: PageProps) {
   );
 }
 
-// Opsional: Generate metadata untuk SEO
+// PERUBAHAN 3: Pastikan metadata juga melakukan await pada params
 export async function generateMetadata({ params }: PageProps) {
-    const artikel = await getArtikelBySlug(params.slug);
+    // Await params di dalam generateMetadata
+    const resolvedParams = await params;
+    const artikel = await getArtikelBySlug(resolvedParams.slug);
+    
     if (!artikel) {
         return { title: 'Artikel tidak ditemukan' }
     }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, FormEvent, useRef, useEffect } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { Artikel, User } from '@prisma/client';
 import { createArtikel, updateArtikel } from '@/actions/admin.actions';
 import toast from 'react-hot-toast';

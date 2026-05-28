@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
 // Revalidate data setiap 10 detik
 export const revalidate = 10;
 

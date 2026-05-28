@@ -5,7 +5,7 @@ import { Artikel, User } from '@prisma/client';
 import { deleteArtikel } from '@/actions/admin.actions';
 import ArtikelFormModal from '@/components/ArtikelFormModal';
 import AdminActionButtons from '@/components/AdminActionButtons';
-import { PlusCircle, FileText, Calendar, Tag } from 'lucide-react';
+import { PlusCircle, FileText, Tag } from 'lucide-react';
 import Image from 'next/image';
 
 // Definisikan tipe Artikel dengan relasi Penulis

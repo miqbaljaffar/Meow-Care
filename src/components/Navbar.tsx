@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { PawPrint } from 'lucide-react';
-import { auth } from '@/app/api/auth/[...nextauth]/route';
+import { auth } from '@/auth';
 import LogoutButton from './LogoutButton';
 
 export default async function Navbar() {

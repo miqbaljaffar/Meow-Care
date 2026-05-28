@@ -1,7 +1,7 @@
 import AntrianForm from '@/components/AntrianForm';
 import { Suspense } from 'react';
 import { Stethoscope } from 'lucide-react';
-import { auth } from '@/app/api/auth/[...nextauth]/route';
+import { auth } from '@/auth'; 
 import { getUserProfile } from '@/actions/profil.actions';
 
 // Definisikan tipe untuk user dan kucing
@@ -43,12 +43,16 @@ async function AntrianPageContent({ layanan }: { layanan: string | null }) {
   return <AntrianForm jenisLayanan={layanan} userData={userData} />;
 }
 
-export default function HalamanBaruAntrian({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  const layanan = searchParams.layanan as string | null;
+// PERUBAHAN ADA DI SINI 👇
+type Props = {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+// Pastikan komponen utama menjadi async
+export default async function HalamanBaruAntrian({ searchParams }: Props) {
+  // Await searchParams sebelum digunakan
+  const resolvedSearchParams = await searchParams;
+  const layanan = resolvedSearchParams.layanan as string | null;
 
   return (
     <div className="container mx-auto py-20 px-4">

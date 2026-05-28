@@ -3,10 +3,10 @@ import { notFound } from 'next/navigation';
 import { Ticket, Users, Clock } from 'lucide-react';
 import type { Metadata } from 'next';
 
-// FINAL ATTEMPT: Defining the most complete and explicit props type
+// 1. Ubah params (dan searchParams) menjadi Promise
 type PageProps = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: Promise<{ id: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 async function getDetailAntrian(id: number) {
@@ -31,7 +31,10 @@ async function getDetailAntrian(id: number) {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const id = parseInt(params.id, 10);
+  // 2. Await params sebelum mengambil id
+  const resolvedParams = await params;
+  const id = parseInt(resolvedParams.id, 10);
+  
   if (isNaN(id)) {
     return {
       title: 'Antrian Tidak Ditemukan',
@@ -53,7 +56,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function HalamanStatusAntrian({ params }: PageProps) {
-  const id = parseInt(params.id, 10);
+  // 3. Await params sebelum mengambil id
+  const resolvedParams = await params;
+  const id = parseInt(resolvedParams.id, 10);
+  
   if (isNaN(id)) {
     notFound();
   }
@@ -79,6 +85,7 @@ export default async function HalamanStatusAntrian({ params }: PageProps) {
 
   const statusInfo = getStatusInfo(detail.status);
 
+  // ... (Sisa kode return JSX tetap sama dan tidak perlu diubah)
   return (
     <div className="container mx-auto py-20 flex flex-col items-center">
       <div className="bg-white p-10 rounded-2xl shadow-xl max-w-md w-full text-center">

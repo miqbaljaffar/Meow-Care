@@ -30,8 +30,8 @@ export default function TampilanAntrian({ initialData }: { initialData: QueueDat
 
   useEffect(() => {
     const supabase = createSupabaseClient();
-    let channel: any = null;
-    let intervalId: NodeJS.Timer | null = null;
+    let channel: ReturnType<SupabaseClient['channel']> | null = null;
+    let intervalId: ReturnType<typeof window.setInterval> | null = null;
 
     const fetchLatestQueue = async () => {
       try {

@@ -1,4 +1,4 @@
-import { auth } from '@/app/api/auth/[...nextauth]/route';
+import { auth } from '@/auth';
 import { getUserProfile } from '@/actions/profil.actions';
 import { redirect } from 'next/navigation';
 import ProfileClient from './ProfileClient'; 

@@ -1,6 +1,6 @@
 'use client';
 
-import { AreaChart, BarChart, Card, Title, Text } from "@tremor/react";
+import { AreaChart, BarChart, Card, Title } from "@tremor/react";
 
 interface ChartData {
   layananPopuler: {

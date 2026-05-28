@@ -69,7 +69,7 @@ export async function createLayanan(formData: FormData) {
     revalidatePath('/admin/layanan');
     revalidatePath('/layanan');
     return { success: true, message: 'Layanan berhasil ditambahkan.' };
-  } catch (error) {
+  } catch (_error) {
     return { success: false, message: 'Database Error: Gagal menambah layanan.' };
   }
 }
@@ -90,7 +90,7 @@ export async function updateLayanan(id: number, formData: FormData) {
     revalidatePath('/admin/layanan');
     revalidatePath('/layanan');
     return { success: true, message: 'Layanan berhasil diperbarui.' };
-  } catch (error) {
+  } catch (_error) {
     return { success: false, message: 'Database Error: Gagal memperbarui layanan.' };
   }
 }
@@ -101,7 +101,7 @@ export async function deleteLayanan(id: number) {
     revalidatePath('/admin/layanan');
     revalidatePath('/layanan');
     return { success: true, message: 'Layanan berhasil dihapus.' };
-  } catch (error) {
+  } catch (_error) {
     return { success: false, message: 'Database Error: Gagal menghapus layanan.' };
   }
 }
@@ -117,7 +117,7 @@ export async function updateTestimoniStatus(id: number, status: 'PUBLISHED' | 'P
     revalidatePath('/admin/testimoni');
     revalidatePath('/#testimoni');
     return { success: true, message: `Status testimoni berhasil diubah.` };
-  } catch (error) {
+  } catch (_error) {
     return { success: false, message: 'Gagal memperbarui status testimoni.' };
   }
 }
@@ -128,7 +128,7 @@ export async function deleteTestimoni(id: number) {
     revalidatePath('/admin/testimoni');
     revalidatePath('/#testimoni');
     return { success: true, message: 'Testimoni berhasil dihapus.' };
-  } catch (error) {
+  } catch (_error) {
     return { success: false, message: 'Database Error: Gagal menghapus testimoni.' };
   }
 }
@@ -168,7 +168,7 @@ export async function createDokter(formData: FormData) {
     revalidatePath('/admin/dokter');
     revalidatePath('/#tim');
     return { success: true, message: 'Data dokter berhasil ditambahkan.' };
-  } catch (error) {
+  } catch (_error) {
     return { success: false, message: 'Database Error: Gagal menambah data dokter.' };
   }
 }
@@ -208,7 +208,7 @@ export async function updateDokter(id: number, formData: FormData) {
     revalidatePath('/admin/dokter');
     revalidatePath('/#tim');
     return { success: true, message: 'Data dokter berhasil diperbarui.' };
-  } catch (error) {
+  } catch (_error) {
     return { success: false, message: 'Database Error: Gagal memperbarui data dokter.' };
   }
 }
@@ -222,7 +222,7 @@ export async function deleteDokter(id: number) {
     revalidatePath('/admin/dokter');
     revalidatePath('/#tim');
     return { success: true, message: 'Data dokter berhasil dihapus.' };
-  } catch (error) {
+  } catch (_error) {
     return { success: false, message: 'Database Error: Gagal menghapus data dokter.' };
   }
 }
@@ -284,7 +284,7 @@ export async function createArtikel(formData: FormData) {
     revalidatePath('/admin/artikel');
     revalidatePath('/blog');
     return { success: true, message: 'Artikel berhasil ditambahkan.' };
-  } catch (error) {
+  } catch (_error) {
     return { success: false, message: 'Database Error: Gagal menambah artikel.' };
   }
 }
@@ -341,7 +341,7 @@ export async function updateArtikel(id: number, formData: FormData) {
     revalidatePath('/blog');
     revalidatePath(`/blog/${validatedFields.data.slug}`);
     return { success: true, message: 'Artikel berhasil diperbarui.' };
-  } catch (error) {
+  } catch (_error) {
     return { success: false, message: 'Database Error: Gagal memperbarui artikel.' };
   }
 }
@@ -356,7 +356,7 @@ export async function deleteArtikel(id: number) {
     revalidatePath('/admin/artikel');
     revalidatePath('/blog');
     return { success: true, message: 'Artikel berhasil dihapus.' };
-  } catch (error) {
+  } catch (_error) {
     return { success: false, message: 'Database Error: Gagal menghapus artikel.' };
   }
 }

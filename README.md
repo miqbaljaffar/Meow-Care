@@ -33,7 +33,7 @@ MeowCare adalah aplikasi web modern untuk **klinik hewan** dengan fokus pada:
 
 ## 🛠️ Tech Stack
 
-* **Next.js 14 (App Router)**
+* **Next.js 15 (App Router)**
 * **TypeScript** + **Tailwind CSS**
 * **Prisma ORM** + Database (PostgreSQL/MySQL/MongoDB)
 * **NextAuth.js** (autentikasi)
@@ -72,6 +72,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY="your-public-anon-key"
 ```
 
 > Supabase Realtime akan otomatis memantau perubahan tabel `Antrian` di database.
+> Jika menggunakan Supabase, pastikan Realtime aktif untuk tabel `Antrian` dan set policy/permissions sesuai kebutuhan.
 
 ### 4️⃣ Migrasi Database
 
