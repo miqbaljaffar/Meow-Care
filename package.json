@@ -6,7 +6,7 @@
     "dev": "concurrently \"npm:dev:next\" \"npm:dev:ws\"",
     "dev:next": "next dev --turbopack",
     "dev:ws": "node websocket-server.js",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -49,5 +49,13 @@
   },
   "prisma": {
     "seed": "ts-node --project prisma/tsconfig.seed.json prisma/seed.ts"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "prisma",
+      "@prisma/client",
+      "@prisma/engines",
+      "sharp"
+    ]
   }
 }
