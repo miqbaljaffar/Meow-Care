@@ -2,9 +2,9 @@
 
 
 :root {
-  --color-brand-green-light: #6EE7B7;
-  --color-brand-green: #10B981;
-  --color-brand-green-dark: #059669;
+  --color-brand-green-light: #5EEAD4;
+  --color-brand-green: #047857;
+  --color-brand-green-dark: #065F46;
   --color-brand-white: #F9FAFB;
 
   /* Ubah ke palet warna admin tema TERANG */
@@ -47,4 +47,22 @@ select {
 input::placeholder,
 textarea::placeholder {
   @apply text-gray-500;
+}
+
+@layer utilities {
+  .bg-brand-green {
+    background-color: var(--color-brand-green);
+  }
+  .bg-brand-green-dark {
+    background-color: var(--color-brand-green-dark);
+  }
+  .bg-brand-green-light {
+    background-color: var(--color-brand-green-light);
+  }
+  .text-brand-green {
+    color: var(--color-brand-green);
+  }
+  .text-brand-green-dark {
+    color: var(--color-brand-green-dark);
+  }
 }
