@@ -91,8 +91,9 @@ export default async function HomePage() {
                           <Image
                             src={artikel.gambar || '/kucing.jpg'}
                             alt={artikel.judul}
-                            layout="fill"
-                            objectFit="cover"
+                            fill
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                            style={{ objectFit: 'cover' }}
                             className="transition-transform duration-300 group-hover:scale-105"
                           />
                         </div>

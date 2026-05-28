@@ -1,34 +1,64 @@
 @import "tailwindcss";
 
-
 :root {
   --color-brand-green-light: #5EEAD4;
   --color-brand-green: #047857;
   --color-brand-green-dark: #065F46;
   --color-brand-white: #F9FAFB;
 
-  /* Ubah ke palet warna admin tema TERANG */
-  --color-admin-bg: #f4f7f6; /* Abu-abu sangat terang kehijauan */
-  --color-admin-sidebar-bg: #ffffff; /* Putih bersih untuk sidebar */
+  --color-admin-bg: #f4f7f6;
+  --color-admin-sidebar-bg: #ffffff;
   --color-admin-card-bg: #ffffff;
-  --color-admin-text-primary: #1a202c; /* Hitam untuk teks utama */
-  --color-admin-text-secondary: #718096; /* Abu-abu untuk teks sekunder */
-
+  --color-admin-text-primary: #1a202c;
+  --color-admin-text-secondary: #718096;
 
   --background: #ffffff;
   --foreground: #171717;
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-/* Blok @media untuk dark mode telah dihapus */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 body {
+  min-height: 100vh;
+  margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.5;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid rgba(4, 120, 87, 0.5);
+  outline-offset: 2px;
 }
 
 /* Global input dan form styling untuk kontras yang lebih baik */
