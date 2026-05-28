@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { marked } from 'marked';
 import Image from 'next/image';
 import { Calendar, User } from 'lucide-react';
+import { Metadata } from 'next';
 
 const getArtikelBySlug = cache(async (slug: string) => {
   const artikel = await prisma.artikel.findUnique({
@@ -70,7 +71,7 @@ export default async function DetailArtikelPage({ params }: PageProps) {
 }
 
 // PERUBAHAN 3: Pastikan metadata juga melakukan await pada params
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata({ params }: PageProps) : Promise<Metadata> {
     // Await params di dalam generateMetadata
     const resolvedParams = await params;
     const artikel = await getArtikelBySlug(resolvedParams.slug);
