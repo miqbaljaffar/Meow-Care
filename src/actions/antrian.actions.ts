@@ -16,12 +16,16 @@ async function broadcastQueueUpdate() {
       next: antrianMenunggu?.nomorAntrian,
     };
     
-    // Kirim POST request ke WebSocket server kita
-    await fetch('http://localhost:3001/broadcast', {
+    // Jika ada WEBSOCKET_URL di environment, kirim POST ke server WS.
+    // Jika tidak ada, skip — client-side menggunakan polling API sehingga tetap berfungsi di Vercel.
+    const wsUrl = process.env.WEBSOCKET_URL;
+    if (wsUrl) {
+      await fetch(`${wsUrl.replace(/\/$/, '')}/broadcast`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
-    });
+      });
+    }
   } catch (error) {
     console.error('Failed to broadcast queue update:', error);
   }

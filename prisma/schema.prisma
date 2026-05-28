@@ -5,6 +5,19 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// Model untuk Antrian (sinkronisasi dengan migration.sql)
+model Antrian {
+  id           Int      @id @default(autoincrement())
+  namaPemilik  String
+  namaKucing   String
+  nomorTelepon String
+  jenisLayanan String
+  nomorAntrian  Int      @unique
+  status       String   @default("Menunggu")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")

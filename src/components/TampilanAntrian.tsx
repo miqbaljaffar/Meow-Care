@@ -1,6 +1,7 @@
 /* src/components/TampilanAntrian.tsx */
 'use client';
 import { useEffect, useState } from 'react';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import QueueCard from './QueueCard';
 
 interface QueueData {
@@ -8,43 +9,64 @@ interface QueueData {
   next?: number;
 }
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+function createSupabaseClient(): SupabaseClient | null {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return null;
+  }
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    realtime: {
+      params: {
+        events: ['INSERT', 'UPDATE', 'DELETE'],
+      },
+    },
+  });
+}
+
 export default function TampilanAntrian({ initialData }: { initialData: QueueData }) {
   const [queue, setQueue] = useState(initialData);
 
   useEffect(() => {
-    // URL server WebSocket
-    const wsUrl = 'ws://localhost:3001';
-    const ws = new WebSocket(wsUrl);
+    const supabase = createSupabaseClient();
+    let channel: any = null;
+    let intervalId: NodeJS.Timer | null = null;
 
-    ws.onopen = () => {
-      console.log('Connected to WebSocket server');
-    };
-
-    ws.onmessage = (event) => {
+    const fetchLatestQueue = async () => {
       try {
-        const data = JSON.parse(event.data);
-        console.log('Received queue update:', data);
-        setQueue(data);
+        const response = await fetch('/api/antrian/terkini');
+        if (response.ok) {
+          const latestData: QueueData = await response.json();
+          setQueue(latestData);
+        }
       } catch (error) {
-        console.error('Error parsing WebSocket message:', error);
+        console.error('Gagal fetch antrian:', error);
       }
     };
 
-    ws.onclose = () => {
-      console.log('Disconnected from WebSocket server');
-    };
+    if (supabase) {
+      channel = supabase
+        .channel('public:antrian')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'Antrian' }, () => {
+          fetchLatestQueue();
+        });
 
-    ws.onerror = (error) => {
-        console.error('WebSocket error:', error);
-    };
+      channel.subscribe();
+    } else {
+      fetchLatestQueue();
+      intervalId = setInterval(fetchLatestQueue, 3000);
+    }
 
-    // Cleanup function: tutup koneksi saat komponen di-unmount
     return () => {
-      if (ws.readyState === 1) { // Jika koneksi masih OPEN
-        ws.close();
+      if (channel && supabase) {
+        supabase.removeChannel(channel);
+      }
+      if (intervalId) {
+        clearInterval(intervalId);
       }
     };
-  }, []); // Dependensi kosong agar hanya berjalan sekali saat komponen mount
+  }, []);
 
   return (
     <div className="mx-auto grid max-w-2xl grid-cols-1 gap-8 md:grid-cols-2">

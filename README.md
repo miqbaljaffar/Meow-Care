@@ -18,7 +18,7 @@ MeowCare adalah aplikasi web modern untuk **klinik hewan** dengan fokus pada:
 ### 👩‍⚕️ Portal Pelanggan
 
 * 🔐 **Autentikasi aman** dengan NextAuth.js
-* ⏱ **Antrian online real-time** dengan WebSocket
+* ⏱ **Antrian online real-time** dengan Supabase Realtime
 * 🐱 **Manajemen profil & riwayat medis kucing**
 * 📰 **Blog kesehatan hewan** dengan pencarian & filter
 * ⭐ **Testimoni & layanan klinik**
@@ -39,7 +39,7 @@ MeowCare adalah aplikasi web modern untuk **klinik hewan** dengan fokus pada:
 * **NextAuth.js** (autentikasi)
 * **Lucide React** (ikon ringan)
 * **Framer Motion** (animasi interaktif)
-* **WebSocket** (real-time)
+* **Supabase Realtime** (real-time)
 * **Zod** (validasi form)
 
 ---
@@ -67,7 +67,11 @@ Buat file `.env.local` lalu isi:
 ```env
 DATABASE_URL="..."
 NEXTAUTH_SECRET="..."
+NEXT_PUBLIC_SUPABASE_URL="https://your-project-ref.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="your-public-anon-key"
 ```
+
+> Supabase Realtime akan otomatis memantau perubahan tabel `Antrian` di database.
 
 ### 4️⃣ Migrasi Database
 
