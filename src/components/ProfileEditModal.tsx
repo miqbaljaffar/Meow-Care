@@ -49,7 +49,7 @@ export default function ProfileEditModal({ isOpen, onClose, user }: ProfileEditM
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="nama" className="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+            <label htmlFor="nama" className="block text-sm font-medium text-gray-800">Nama Lengkap</label>
             <input
               id="nama"
               name="nama"
@@ -57,12 +57,12 @@ export default function ProfileEditModal({ isOpen, onClose, user }: ProfileEditM
               value={nama}
               onChange={(e) => setNama(e.target.value)}
               // --- TAMBAHKAN text-gray-900 DI SINI ---
-              className="mt-1 block w-full rounded-md border-gray-300 text-gray-900 shadow-sm focus:border-cyan-500 focus:ring-cyan-500"
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 focus:border-2"
               required
             />
           </div>
           <div>
-            <label htmlFor="nomorTelepon" className="block text-sm font-medium text-gray-700">Nomor Telepon</label>
+            <label htmlFor="nomorTelepon" className="block text-sm font-medium text-gray-800">Nomor Telepon</label>
             <input
               id="nomorTelepon"
               name="nomorTelepon"
@@ -71,7 +71,7 @@ export default function ProfileEditModal({ isOpen, onClose, user }: ProfileEditM
               onChange={(e) => setNomorTelepon(e.target.value)}
               placeholder="Contoh: 081234567890"
               // --- TAMBAHKAN text-gray-900 DI SINI ---
-              className="mt-1 block w-full rounded-md border-gray-300 text-gray-900 shadow-sm focus:border-cyan-500 focus:ring-cyan-500"
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 focus:border-2"
             />
           </div>
           <div className="flex justify-end gap-4 pt-4">

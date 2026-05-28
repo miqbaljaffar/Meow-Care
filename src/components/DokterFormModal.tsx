@@ -64,24 +64,24 @@ export default function DokterFormModal({ isOpen, onClose, dokterToEdit }: Dokte
         {/* Tambahkan enctype untuk upload file */}
         <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
           <div>
-            <label htmlFor="nama" className="block text-sm font-medium text-gray-700">Nama Dokter</label>
+            <label htmlFor="nama" className="block text-sm font-medium text-gray-800">Nama Dokter</label>
             <input
               id="nama"
               name="nama"
               type="text"
               defaultValue={dokterToEdit?.nama}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-cyan-500 focus:ring-cyan-500"
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 focus:border-2"
               required
             />
           </div>
           <div>
-            <label htmlFor="spesialisasi" className="block text-sm font-medium text-gray-700">Spesialisasi</label>
+            <label htmlFor="spesialisasi" className="block text-sm font-medium text-gray-800">Spesialisasi</label>
             <input
               id="spesialisasi"
               name="spesialisasi"
               type="text"
               defaultValue={dokterToEdit?.spesialisasi}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-cyan-500 focus:ring-cyan-500"
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 focus:border-2"
               required
             />
           </div>

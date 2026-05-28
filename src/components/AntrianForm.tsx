@@ -89,7 +89,7 @@ export default function AntrianForm({ jenisLayanan, userData }: AntrianFormProps
 
       {/* Input Nama Pemilik */}
       <div>
-        <label htmlFor="namaPemilik" className="block text-sm font-medium text-gray-700">Nama Pemilik</label>
+        <label htmlFor="namaPemilik" className="block text-sm font-medium text-gray-800">Nama Pemilik</label>
         <input 
           type="text" 
           name="namaPemilik" 
@@ -97,23 +97,23 @@ export default function AntrianForm({ jenisLayanan, userData }: AntrianFormProps
           required 
           defaultValue={userData?.nama || ''}
           readOnly={!!userData} // Kunci input jika user sudah login
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2 bg-gray-100 read-only:cursor-not-allowed" 
+          className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-3 bg-white text-gray-900 placeholder-gray-500 read-only:bg-gray-100 read-only:cursor-not-allowed" 
         />
       </div>
 
       {/* Input Nama Kucing (Dropdown atau Teks) */}
       <div>
-        <label htmlFor="namaKucing" className="block text-sm font-medium text-gray-700">Nama Kucing</label>
+        <label htmlFor="namaKucing" className="block text-sm font-medium text-gray-800">Nama Kucing</label>
         {userData ? (
           <select
             name="kucingId"
             id="kucingId"
             required
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2"
+            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-3 bg-white text-gray-900"
           >
-            <option value="">-- Pilih Kucing --</option>
+            <option value="" className="text-gray-600">-- Pilih Kucing --</option>
             {userData.kucing.map(k => (
-              <option key={k.id} value={k.id}>{k.nama}</option>
+              <option key={k.id} value={k.id} className="text-gray-900">{k.nama}</option>
             ))}
           </select>
         ) : (
@@ -122,26 +122,28 @@ export default function AntrianForm({ jenisLayanan, userData }: AntrianFormProps
             name="namaKucing" 
             id="namaKucing" 
             required 
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2" 
+            placeholder="Masukkan nama kucing Anda"
+            className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-3 bg-white text-gray-900 placeholder-gray-500" 
           />
         )}
       </div>
 
       {/* Input Nomor Telepon */}
        <div>
-        <label htmlFor="nomorTelepon" className="block text-sm font-medium text-gray-700">Nomor Telepon</label>
+        <label htmlFor="nomorTelepon" className="block text-sm font-medium text-gray-800">Nomor Telepon</label>
         <input 
           type="tel" 
           name="nomorTelepon" 
           id="nomorTelepon" 
           required 
+          placeholder="Contoh: 0812-3456-7890"
           defaultValue={userData?.nomorTelepon || ''}
           readOnly={!!userData?.nomorTelepon} // Kunci jika nomor sudah ada
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-2 read-only:bg-gray-100 read-only:cursor-not-allowed" 
+          className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-brand-green focus:ring-brand-green sm:text-sm p-3 bg-white text-gray-900 placeholder-gray-500 read-only:bg-gray-100 read-only:cursor-not-allowed" 
         />
         {userData && !userData.nomorTelepon && (
-            <p className="text-xs text-gray-500 mt-1">
-                Anda dapat menambahkan nomor telepon di <Link href="/profil" className="underline text-cyan-600">halaman profil</Link> agar terisi otomatis.
+            <p className="text-xs text-gray-600 mt-1">
+                Anda dapat menambahkan nomor telepon di <Link href="/profil" className="underline text-brand-green font-medium">halaman profil</Link> agar terisi otomatis.
             </p>
         )}
       </div>

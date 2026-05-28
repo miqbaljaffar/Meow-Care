@@ -21,14 +21,14 @@ export default function BlogFilter({
       {/* Search Bar */}
       <div className="relative mb-6 max-w-lg mx-auto">
         <label htmlFor="search" className="sr-only">Cari Artikel</label>
-        <Search className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
+        <Search className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-500" />
         <input
           id="search"
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Cari artikel berdasarkan judul..."
-          className="w-full rounded-full border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green"
+          className="w-full rounded-full border border-gray-300 py-3 pl-12 pr-4 text-gray-900 placeholder-gray-500 shadow-sm focus:border-brand-green focus:ring-brand-green focus:border-2"
         />
       </div>
 

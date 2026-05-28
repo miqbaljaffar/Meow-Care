@@ -38,23 +38,23 @@ export default function RegistrasiForm() {
     <form onSubmit={handleSubmit} className="space-y-4">
        <div className="relative">
         <label htmlFor="nama" className="sr-only">Nama Lengkap</label>
-        <User className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
-        <input type="text" name="nama" id="nama" required placeholder="Nama Lengkap" className="w-full rounded-full border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green" />
+        <User className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-500" />
+        <input type="text" name="nama" id="nama" required placeholder="Nama Lengkap" className="w-full rounded-full border border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green placeholder-gray-500 text-gray-900" />
       </div>
        <div className="relative">
         <label htmlFor="email" className="sr-only">Email</label>
-        <AtSign className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
-        <input type="email" name="email" id="email" required placeholder="Email" className="w-full rounded-full border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green" />
+        <AtSign className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-500" />
+        <input type="email" name="email" id="email" required placeholder="Email" className="w-full rounded-full border border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green placeholder-gray-500 text-gray-900" />
       </div>
       <div className="relative">
         <label htmlFor="password" className="sr-only">Password</label>
-        <Lock className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
-        <input type="password" name="password" id="password" required placeholder="Password" className="w-full rounded-full border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green" />
+        <Lock className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-500" />
+        <input type="password" name="password" id="password" required placeholder="Password" className="w-full rounded-full border border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green placeholder-gray-500 text-gray-900" />
       </div>
       <div className="relative">
         <label htmlFor="confirmPassword" className="sr-only">Konfirmasi Password</label>
-         <Lock className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
-        <input type="password" name="confirmPassword" id="confirmPassword" required placeholder="Konfirmasi Password" className="w-full rounded-full border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green" />
+         <Lock className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-500" />
+        <input type="password" name="confirmPassword" id="confirmPassword" required placeholder="Konfirmasi Password" className="w-full rounded-full border border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green placeholder-gray-500 text-gray-900" />
       </div>
       
       {error && <p className="text-sm text-center text-red-500">{error}</p>}

@@ -48,39 +48,39 @@ export default function LayananFormModal({ isOpen, onClose, layananToEdit }: Lay
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="nama" className="block text-sm font-medium text-gray-700">Nama Layanan</label>
+            <label htmlFor="nama" className="block text-sm font-medium text-gray-800">Nama Layanan</label>
             <input
               id="nama"
               name="nama"
               type="text"
               defaultValue={layananToEdit?.nama}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-cyan-500 focus:ring-cyan-500"
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 focus:border-2"
               required
             />
           </div>
           <div>
-            <label htmlFor="deskripsi" className="block text-sm font-medium text-gray-700">Deskripsi</label>
+            <label htmlFor="deskripsi" className="block text-sm font-medium text-gray-800">Deskripsi</label>
             <textarea
               id="deskripsi"
               name="deskripsi"
               rows={4}
               defaultValue={layananToEdit?.deskripsi}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-cyan-500 focus:ring-cyan-500"
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 focus:border-2"
               required
             />
           </div>
           {/* INPUT BARU UNTUK IKON */}
           <div>
-            <label htmlFor="icon" className="block text-sm font-medium text-gray-700">Nama Ikon (dari Lucide)</label>
+            <label htmlFor="icon" className="block text-sm font-medium text-gray-800">Nama Ikon (dari Lucide)</label>
             <input
               id="icon"
               name="icon"
               type="text"
               defaultValue={layananToEdit?.icon || ''}
               placeholder="Contoh: Stethoscope, ShieldCheck"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-cyan-500 focus:ring-cyan-500"
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 focus:border-2"
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-600 mt-1">
               Lihat daftar ikon di <a href="https://lucide.dev/icons/" target="_blank" rel="noopener noreferrer" className="text-cyan-600 underline">lucide.dev</a>.
             </p>
           </div>

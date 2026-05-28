@@ -57,26 +57,26 @@ export default function LoginForm() {
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="relative">
         <label htmlFor="email" className="sr-only">Email</label>
-        <AtSign className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
+        <AtSign className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-500" />
         <input
           type="email"
           name="email"
           id="email"
           required
           placeholder="Email"
-          className="w-full rounded-full border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green"
+          className="w-full rounded-full border border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green placeholder-gray-500 text-gray-900"
         />
       </div>
       <div className="relative">
         <label htmlFor="password" className="sr-only">Password</label>
-        <Lock className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-400" />
+        <Lock className="pointer-events-none absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-gray-500" />
         <input
           type="password"
           name="password"
           id="password"
           required
           placeholder="Password"
-          className="w-full rounded-full border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green"
+          className="w-full rounded-full border border-gray-300 py-3 pl-12 pr-4 shadow-sm focus:border-brand-green focus:ring-brand-green placeholder-gray-500 text-gray-900"
         />
       </div>
 

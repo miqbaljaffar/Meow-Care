@@ -72,29 +72,29 @@ export default function CatFormModal({
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="nama" className="block text-sm font-medium text-gray-700">Nama</label>
+            <label htmlFor="nama" className="block text-sm font-medium text-gray-800">Nama</label>
             <input
               id="nama"
               type="text"
               value={nama}
               onChange={(e) => setNama(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-cyan-500 focus:ring-cyan-500"
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 focus:border-2"
               required
             />
           </div>
           <div>
-            <label htmlFor="spesies" className="block text-sm font-medium text-gray-700">Spesies</label>
+            <label htmlFor="spesies" className="block text-sm font-medium text-gray-800">Spesies</label>
             <input
               id="spesies"
               type="text"
               value={spesies}
               onChange={(e) => setSpesies(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-cyan-500 focus:ring-cyan-500"
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 focus:border-2"
               required
             />
           </div>
           <div>
-            <label htmlFor="umur" className="block text-sm font-medium text-gray-700">Umur (tahun)</label>
+            <label htmlFor="umur" className="block text-sm font-medium text-gray-800">Umur (tahun)</label>
             <input
               id="umur"
               type="number"

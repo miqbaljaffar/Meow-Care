@@ -13,7 +13,7 @@ export default function HeroSection() {
         <div className="text-center md:text-left">
           <h1 className="text-4xl lg:text-6xl font-extrabold text-gray-800 leading-tight">
             Perawatan Terbaik untuk
-            <span className="block text-brand-green mt-2">
+            <span className="block bg-gradient-to-r from-brand-green to-emerald-400 bg-clip-text text-transparent mt-2">
               Sahabat Terbaik Anda
             </span>
           </h1>

@@ -4,12 +4,12 @@ import AnimatedSection from './AnimatedSection';
 export default function LocationAndHours() {
   return (
     <AnimatedSection>
-      <div className="py-16 bg-gray-700 text-gray-300">
+      <div className="py-16 bg-gray-900 text-white">
         <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Peta Lokasi */}
           <div>
             <h3 className="flex items-center gap-3 text-2xl font-bold text-white mb-4">
-              <MapPin />
+              <MapPin className="text-brand-green" />
               Lokasi Kami
             </h3>
             <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-lg">
@@ -29,22 +29,22 @@ export default function LocationAndHours() {
           {/* Jam Operasional */}
           <div>
             <h3 className="flex items-center gap-3 text-2xl font-bold text-white mb-4">
-              <Clock />
+              <Clock className="text-brand-green" />
               Jam Operasional
             </h3>
-            <div className="bg-gray-800 p-6 rounded-lg shadow-inner">
+            <div className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
               <ul className="space-y-3">
-                <li className="flex justify-between">
-                  <span>Senin - Jumat</span>
-                  <span className="font-semibold text-brand-green-light">08:00 - 20:00 WIB</span>
+                <li className="flex justify-between items-center">
+                  <span className="text-gray-100">Senin - Jumat</span>
+                  <span className="font-semibold text-brand-green-light bg-gray-900 px-3 py-1 rounded">08:00 - 20:00 WIB</span>
                 </li>
-                <li className="flex justify-between">
-                  <span>Sabtu</span>
-                  <span className="font-semibold text-brand-green-light">09:00 - 18:00 WIB</span>
+                <li className="flex justify-between items-center">
+                  <span className="text-gray-100">Sabtu</span>
+                  <span className="font-semibold text-brand-green-light bg-gray-900 px-3 py-1 rounded">09:00 - 18:00 WIB</span>
                 </li>
-                <li className="flex justify-between">
-                  <span>Minggu & Hari Libur</span>
-                  <span className="font-semibold text-red-400">Tutup</span>
+                <li className="flex justify-between items-center">
+                  <span className="text-gray-100">Minggu & Hari Libur</span>
+                  <span className="font-semibold text-red-300 bg-gray-900 px-3 py-1 rounded">Tutup</span>
                 </li>
               </ul>
             </div>
