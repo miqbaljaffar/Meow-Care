@@ -1,4 +1,5 @@
-import type { NextConfig } from "next";
+import path from 'path';
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
@@ -10,6 +11,9 @@ const nextConfig: NextConfig = {
         pathname: '/pin/**',
       },
     ],
+  },
+  turbopack: {
+    root: path.join(__dirname),
   },
 };
 

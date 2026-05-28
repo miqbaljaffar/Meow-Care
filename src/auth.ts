@@ -19,18 +19,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
-        });
+        try {
+          const user = await prisma.user.findUnique({
+            where: { email: credentials.email as string },
+          });
 
-        if (user && user.password && bcrypt.compareSync(credentials.password as string, user.password)) {
-          return {
-            id: user.id.toString(),
-            name: user.nama,
-            email: user.email,
-            role: user.role,
-          };
-        } else {
+          if (user && user.password && bcrypt.compareSync(credentials.password as string, user.password)) {
+            return {
+              id: user.id.toString(),
+              name: user.nama,
+              email: user.email,
+              role: user.role,
+            };
+          }
+
+          return null;
+        } catch (error) {
+          console.error('Auth authorize error:', error);
           return null;
         }
       },
