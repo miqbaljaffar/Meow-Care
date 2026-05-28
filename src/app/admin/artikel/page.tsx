@@ -1,6 +1,8 @@
 import prisma from '@/lib/prisma';
 import ArtikelAdminClient from '@/components/ArtikelAdminClient';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminArtikelPage() {
   // Ambil data artikel dan data penulis secara paralel
   const [artikel, authors] = await Promise.all([
