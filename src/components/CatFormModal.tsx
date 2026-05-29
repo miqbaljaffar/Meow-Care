@@ -120,8 +120,6 @@ export default function CatFormModal({
               disabled={isLoading}
               className="rounded-lg border border-transparent bg-cyan-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-cyan-700 disabled:opacity-50 transition-colors"
             >
-              className="rounded-md border border-transparent bg-cyan-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-cyan-700 disabled:opacity-50"
-            >
               {isLoading ? 'Menyimpan...' : 'Simpan'}
             </button>
           </div>
