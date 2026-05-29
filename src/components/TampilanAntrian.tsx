@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import QueueCard from './QueueCard';
+import { TampilanAntrianSkeleton } from './SkeletonLoader';
 
 interface QueueData {
   current?: number;
@@ -27,6 +28,7 @@ function createSupabaseClient(): SupabaseClient | null {
 
 export default function TampilanAntrian({ initialData }: { initialData: QueueData }) {
   const [queue, setQueue] = useState(initialData);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const supabase = createSupabaseClient();
@@ -35,6 +37,7 @@ export default function TampilanAntrian({ initialData }: { initialData: QueueDat
 
     const fetchLatestQueue = async () => {
       try {
+        setIsLoading(true);
         const response = await fetch('/api/antrian/terkini');
         if (response.ok) {
           const latestData: QueueData = await response.json();
@@ -42,6 +45,8 @@ export default function TampilanAntrian({ initialData }: { initialData: QueueDat
         }
       } catch (error) {
         console.error('Gagal fetch antrian:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -68,8 +73,12 @@ export default function TampilanAntrian({ initialData }: { initialData: QueueDat
     };
   }, []);
 
+  if (isLoading) {
+    return <TampilanAntrianSkeleton />;
+  }
+
   return (
-    <div className="mx-auto grid max-w-2xl grid-cols-1 gap-8 md:grid-cols-2">
+    <div className="mx-auto grid max-w-2xl grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2">
       <QueueCard label="Sedang Dilayani" queueNumber={queue.current || '-'} isCurrent={true} />
       <QueueCard label="Antrian Berikutnya" queueNumber={queue.next || '-'} />
     </div>

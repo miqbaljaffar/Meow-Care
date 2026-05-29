@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import QueueCard from './QueueCard';
+import { TampilanAntrianSkeleton } from './SkeletonLoader';
 
 // 1. Definisikan tipe untuk data antrian
 interface QueueData {
@@ -17,10 +18,12 @@ interface RealtimeQueueDisplayProps {
 // 3. Terapkan tipe tersebut ke props
 export default function RealtimeQueueDisplay({ initialQueueData }: RealtimeQueueDisplayProps) {
   const [queue, setQueue] = useState<QueueData>(initialQueueData);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchLatestQueue = async () => {
       try {
+        setIsLoading(true);
         const response = await fetch('/api/antrian/terkini');
         if (response.ok) {
           const latestData: QueueData = await response.json();
@@ -28,13 +31,20 @@ export default function RealtimeQueueDisplay({ initialQueueData }: RealtimeQueue
         }
       } catch (error) {
         console.error('Gagal fetch antrian:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
+    fetchLatestQueue();
     const intervalId = setInterval(fetchLatestQueue, 3000);
 
     return () => clearInterval(intervalId);
   }, []);
+
+  if (isLoading) {
+    return <TampilanAntrianSkeleton />;
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-2xl mb-12">
