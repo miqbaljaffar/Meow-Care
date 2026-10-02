@@ -31,13 +31,41 @@ async function getDetailAntrian(id: number) {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  // 2. Await params sebelum mengambil id
   const resolvedParams = await params;
   const id = parseInt(resolvedParams.id, 10);
+  const canonicalUrl = `/antrian/${resolvedParams.id}`;
   
   if (isNaN(id)) {
     return {
-      title: 'Antrian Tidak Ditemukan',
+      title: 'Detail Antrian',
+      description: 'Detail antrian tidak ditemukan.',
+      alternates: {
+        canonical: canonicalUrl,
+      },
+      openGraph: {
+        title: 'Detail Antrian | Meow-Care',
+        description: 'Detail antrian tidak ditemukan.',
+        type: 'website',
+        url: canonicalUrl,
+        images: [
+          {
+            url: '/og-default.svg',
+            width: 1200,
+            height: 630,
+            alt: 'Meow-Care Klinik Kucing',
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: 'Detail Antrian | Meow-Care',
+        description: 'Detail antrian tidak ditemukan.',
+        images: ['/og-default.svg'],
+      },
+      robots: {
+        index: false,
+        follow: true,
+      },
     };
   }
 
@@ -45,13 +73,69 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!detail) {
     return {
-      title: 'Antrian Tidak Ditemukan',
+      title: 'Detail Antrian',
+      description: 'Detail antrian tidak ditemukan.',
+      alternates: {
+        canonical: canonicalUrl,
+      },
+      openGraph: {
+        title: 'Detail Antrian | Meow-Care',
+        description: 'Detail antrian tidak ditemukan.',
+        type: 'website',
+        url: canonicalUrl,
+        images: [
+          {
+            url: '/og-default.svg',
+            width: 1200,
+            height: 630,
+            alt: 'Meow-Care Klinik Kucing',
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: 'Detail Antrian | Meow-Care',
+        description: 'Detail antrian tidak ditemukan.',
+        images: ['/og-default.svg'],
+      },
+      robots: {
+        index: false,
+        follow: true,
+      },
     };
   }
 
   return {
-    title: `Status Antrian #${detail.nomorAntrian} - Meow-Care`,
-    description: `Status antrian untuk ${detail.namaPemilik} dengan kucing bernama ${detail.namaKucing}.`,
+    title: 'Detail Antrian',
+    description: `Status antrian #${detail.nomorAntrian} untuk ${detail.namaPemilik} dengan kucing bernama ${detail.namaKucing}.`,
+    keywords: ['detail antrian', 'status antrian', 'nomor antrian kucing', 'meow-care'],
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: `Detail Antrian #${detail.nomorAntrian} | Meow-Care`,
+      description: `Status antrian #${detail.nomorAntrian} untuk ${detail.namaPemilik} dengan kucing bernama ${detail.namaKucing}.`,
+      type: 'website',
+      url: canonicalUrl,
+      images: [
+        {
+          url: '/og-default.svg',
+          width: 1200,
+          height: 630,
+          alt: `Detail Antrian #${detail.nomorAntrian} Meow-Care`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `Detail Antrian #${detail.nomorAntrian} | Meow-Care`,
+      description: `Status antrian #${detail.nomorAntrian} untuk ${detail.namaPemilik} dengan kucing bernama ${detail.namaKucing}.`,
+      images: ['/og-default.svg'],
+    },
+    robots: {
+      index: false,
+      follow: true,
+    },
   };
 }
 

@@ -1,7 +1,41 @@
+import type { Metadata } from 'next';
 import { PawPrint, Heart, Stethoscope, Users } from 'lucide-react';
 import Image from 'next/image';
 import TimDokterSection from '@/components/TimDokterSection';
 import AnimatedSection from '@/components/AnimatedSection';
+
+export const metadata: Metadata = {
+  title: 'Tentang Kami',
+  description: 'Tentang Meow-Care, klinik kucing modern yang didirikan dengan kasih sayang, tim dokter hewan profesional & fasilitas medis lengkap.',
+  keywords: ['tentang meow-care', 'klinik kucing', 'dokter hewan profesional', 'sejarah klinik kucing', 'tim meow-care'],
+  alternates: {
+    canonical: '/about',
+  },
+  openGraph: {
+    title: 'Tentang Kami | Meow-Care',
+    description: 'Tentang Meow-Care, klinik kucing modern yang didirikan dengan kasih sayang, tim dokter hewan profesional & fasilitas medis lengkap.',
+    type: 'website',
+    url: '/about',
+    images: [
+      {
+        url: '/og-default.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Tentang Meow-Care Klinik Kucing',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Tentang Kami | Meow-Care',
+    description: 'Tentang Meow-Care, klinik kucing modern yang didirikan dengan kasih sayang, tim dokter hewan profesional & fasilitas medis lengkap.',
+    images: ['/og-default.svg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 export default function AboutPage() {
   return (

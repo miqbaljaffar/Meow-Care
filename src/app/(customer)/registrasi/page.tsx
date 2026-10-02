@@ -1,7 +1,41 @@
+import type { Metadata } from 'next';
 import RegistrasiForm from '@/components/RegistrasiForm';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PawPrint } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Registrasi',
+  description: 'Daftarkan akun Meow-Care gratis untuk mulai mendaftarkan antrian online, simpan data kucing, dan akses riwayat perawatan.',
+  keywords: ['registrasi meow-care', 'daftar akun', 'antrian online kucing', 'buat akun meow-care'],
+  alternates: {
+    canonical: '/registrasi',
+  },
+  openGraph: {
+    title: 'Registrasi | Meow-Care',
+    description: 'Daftarkan akun Meow-Care gratis untuk mulai mendaftarkan antrian online, simpan data kucing, dan akses riwayat perawatan.',
+    type: 'website',
+    url: '/registrasi',
+    images: [
+      {
+        url: '/og-default.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Registrasi Meow-Care',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Registrasi | Meow-Care',
+    description: 'Daftarkan akun Meow-Care gratis untuk mulai mendaftarkan antrian online, simpan data kucing, dan akses riwayat perawatan.',
+    images: ['/og-default.svg'],
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 export default function HalamanRegistrasi() {
   return (

@@ -1,6 +1,40 @@
+import type { Metadata } from 'next';
 import prisma from '@/lib/prisma';
 import BlogPageClient from '@/components/BlogPageClient';
 import type { Artikel } from '@prisma/client';
+
+export const metadata: Metadata = {
+  title: 'Blog & Edukasi',
+  description: 'Tips perawatan, panduan kesehatan, panduan vaksinasi kucing, artikel edukasi dari dokter hewan Meow-Care.',
+  keywords: ['blog kucing', 'edukasi kucing', 'tips perawatan kucing', 'panduan kesehatan kucing', 'vaksinasi kucing', 'meow-care blog'],
+  alternates: {
+    canonical: '/blog',
+  },
+  openGraph: {
+    title: 'Blog & Edukasi | Meow-Care',
+    description: 'Tips perawatan, panduan kesehatan, panduan vaksinasi kucing, artikel edukasi dari dokter hewan Meow-Care.',
+    type: 'website',
+    url: '/blog',
+    images: [
+      {
+        url: '/og-default.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Blog & Edukasi Meow-Care',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Blog & Edukasi | Meow-Care',
+    description: 'Tips perawatan, panduan kesehatan, panduan vaksinasi kucing, artikel edukasi dari dokter hewan Meow-Care.',
+    images: ['/og-default.svg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 const getArtikelTerbit = async (): Promise<Artikel[]> => {
   try {

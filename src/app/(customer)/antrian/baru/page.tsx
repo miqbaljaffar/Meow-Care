@@ -1,8 +1,42 @@
+import type { Metadata } from 'next';
 import AntrianForm from '@/components/AntrianForm';
 import { Suspense } from 'react';
 import { Stethoscope } from 'lucide-react';
 import { auth } from '@/auth'; 
 import { getUserProfile } from '@/actions/profil.actions';
+
+export const metadata: Metadata = {
+  title: 'Daftar Antrian Baru',
+  description: 'Daftarkan antrian konsultasi klinik kucing Meow-Care secara online, pilih layanan, dan pantau nomor antrian real-time.',
+  keywords: ['daftar antrian kucing', 'antrian online', 'konsultasi kucing', 'meow-care antrian'],
+  alternates: {
+    canonical: '/antrian/baru',
+  },
+  openGraph: {
+    title: 'Daftar Antrian Baru | Meow-Care',
+    description: 'Daftarkan antrian konsultasi klinik kucing Meow-Care secara online, pilih layanan, dan pantau nomor antrian real-time.',
+    type: 'website',
+    url: '/antrian/baru',
+    images: [
+      {
+        url: '/og-default.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Daftar Antrian Meow-Care',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Daftar Antrian Baru | Meow-Care',
+    description: 'Daftarkan antrian konsultasi klinik kucing Meow-Care secara online, pilih layanan, dan pantau nomor antrian real-time.',
+    images: ['/og-default.svg'],
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 // Definisikan tipe untuk user dan kucing
 interface KucingProfil {

@@ -1,7 +1,41 @@
+import type { Metadata } from 'next';
 import LoginForm from '@/components/LoginForm';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PawPrint } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Login',
+  description: 'Login ke akun Meow-Care Anda untuk memantau antrian, riwayat medis kucing, dan kelola profil.',
+  keywords: ['login meow-care', 'masuk akun', 'antrian kucing', 'riwayat medis kucing'],
+  alternates: {
+    canonical: '/login',
+  },
+  openGraph: {
+    title: 'Login | Meow-Care',
+    description: 'Login ke akun Meow-Care Anda untuk memantau antrian, riwayat medis kucing, dan kelola profil.',
+    type: 'website',
+    url: '/login',
+    images: [
+      {
+        url: '/og-default.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Login Meow-Care',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Login | Meow-Care',
+    description: 'Login ke akun Meow-Care Anda untuk memantau antrian, riwayat medis kucing, dan kelola profil.',
+    images: ['/og-default.svg'],
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 export default function HalamanLogin() {
   return (

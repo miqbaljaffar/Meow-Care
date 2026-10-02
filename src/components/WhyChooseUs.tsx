@@ -38,8 +38,8 @@ export default function WhyChooseUs() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature) => (
               <div key={feature.name} className="text-center p-6 bg-gray-50 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center justify-center h-12 w-12 rounded-full bg-brand-green text-white mx-auto mb-4">
-                  <feature.icon className="h-6 w-6" aria-hidden="true" />
+                <div className="flex items-center justify-center h-12 w-12 rounded-full bg-brand-green text-white mx-auto mb-4" aria-hidden="true">
+                  <feature.icon className="h-6 w-6" aria-hidden="true" focusable="false" />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900">{feature.name}</h3>
                 <p className="mt-2 text-base text-gray-600">{feature.description}</p>

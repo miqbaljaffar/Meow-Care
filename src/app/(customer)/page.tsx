@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import prisma from '@/lib/prisma';
 import TampilanAntrian from '@/components/TampilanAntrian';
 import HeroSection from '@/components/HeroSection';
@@ -8,7 +9,41 @@ import AnimatedSection from '@/components/AnimatedSection';
 import Image from 'next/image';
 import TimDokterSection from '@/components/TimDokterSection';
 import WhyChooseUs from '@/components/WhyChooseUs';
+import { OrganizationJsonLd } from '@/components/StructuredData';
 import { BookOpen, Calendar } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Beranda',
+  description: 'Klinik kucing Meow-Care menyediakan layanan kesehatan lengkap, antrian online praktis, dan tim dokter hewan profesional untuk sahabat berbulu Anda.',
+  keywords: ['klinik kucing', 'dokter hewan', 'antrian online', 'meow-care', 'perawatan kucing', 'vaksinasi kucing'],
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'Beranda | Meow-Care',
+    description: 'Klinik kucing Meow-Care menyediakan layanan kesehatan lengkap, antrian online praktis, dan tim dokter hewan profesional untuk sahabat berbulu Anda.',
+    type: 'website',
+    url: '/',
+    images: [
+      {
+        url: '/og-default.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Meow-Care Klinik Kucing',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Beranda | Meow-Care',
+    description: 'Klinik kucing Meow-Care menyediakan layanan kesehatan lengkap, antrian online praktis, dan tim dokter hewan profesional untuk sahabat berbulu Anda.',
+    images: ['/og-default.svg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 type ArtikelItem = {
   id: number;
@@ -97,6 +132,12 @@ export default async function HomePage() {
 
   return (
     <>
+      <OrganizationJsonLd
+        siteUrl={
+          process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ||
+          'https://meow-care.example.com'
+        }
+      />
       <HeroSection />
 
       <AnimatedSection>

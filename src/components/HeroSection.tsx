@@ -3,9 +3,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Heart, Stethoscope, Bone } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 export default function HeroSection() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <section className="py-20">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -39,34 +41,37 @@ export default function HeroSection() {
         {/* Kolom Kanan: Gambar */}
         <div className="relative flex justify-center items-center">
           <div className="absolute w-4/5 h-4/5 bg-emerald-100 rounded-3xl transform -rotate-12"></div>
-          <div className="relative z-10">
+          <div className="relative z-10 w-full max-w-[450px] aspect-square">
             <Image
               src="/kucing.jpg"
-              alt="Kucing Lucu"
-              width={450}
-              height={450}
-              className="rounded-2xl shadow-2xl"
+              alt="Dokter hewan sedang memeriksa kucing oranye yang sehat di klinik Meow-Care"
+              fill
+              sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 450px"
+              className="rounded-2xl shadow-2xl object-cover"
               priority
             />
             {/* Ikon Dekoratif dengan Animasi */}
             <motion.div
               className="absolute -top-6 -left-6 bg-white p-3 rounded-full shadow-lg"
-              animate={{ rotate: [0, 10, -10, 0], y: [0, -5, 5, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              animate={reduceMotion ? false : { rotate: [0, 10, -10, 0], y: [0, -5, 5, 0] }}
+              transition={{ duration: 4, repeat: reduceMotion ? 0 : Infinity, ease: "easeInOut" }}
+              aria-hidden="true"
             >
               <Stethoscope className="text-brand-green" size={28} />
             </motion.div>
             <motion.div
               className="absolute -bottom-6 -right-6 bg-white p-3 rounded-full shadow-lg"
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              animate={reduceMotion ? false : { scale: [1, 1.1, 1] }}
+              transition={{ duration: 2, repeat: reduceMotion ? 0 : Infinity, ease: "easeInOut" }}
+              aria-hidden="true"
             >
               <Heart className="text-red-500" size={28} fill="currentColor" />
             </motion.div>
             <motion.div
               className="absolute top-1/2 -right-8 bg-white p-3 rounded-full shadow-lg"
-              animate={{ x: [0, 5, -5, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              animate={reduceMotion ? false : { x: [0, 5, -5, 0] }}
+              transition={{ duration: 3, repeat: reduceMotion ? 0 : Infinity, ease: "linear" }}
+              aria-hidden="true"
             >
               <Bone className="text-yellow-600" size={28} />
             </motion.div>

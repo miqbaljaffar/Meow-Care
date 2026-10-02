@@ -1,10 +1,11 @@
+import type { Metadata } from 'next';
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { marked } from 'marked';
 import Image from 'next/image';
 import { CalendarDays, UserRound, ArrowLeft, BookOpen } from 'lucide-react';
-import { Metadata } from 'next';
 import Link from 'next/link';
+import { BlogPostingJsonLd } from '@/components/StructuredData';
 
 const getArtikelBySlug = async (slug: string) => {
   try {
@@ -34,9 +35,22 @@ export default async function DetailArtikelPage({ params }: PageProps) {
   }
 
   const contentHtml = marked(artikel.konten);
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || 'https://meow-care.example.com';
 
   return (
-    <article className="container mx-auto py-10 sm:py-16 px-4 max-w-4xl">
+    <>
+      <BlogPostingJsonLd
+        slug={resolvedParams.slug}
+        siteUrl={siteUrl}
+        judul={artikel.judul}
+        kutipan={artikel.kutipan}
+        gambar={artikel.gambar}
+        penulisNama={artikel.penulis?.nama || 'Tim Meow-Care'}
+        createdAt={artikel.createdAt}
+        updatedAt={artikel.updatedAt}
+      />
+      <article className="container mx-auto py-10 sm:py-16 px-4 max-w-4xl">
       <div className="mb-6 sm:mb-8">
         <Link
           href="/blog"
@@ -107,6 +121,7 @@ export default async function DetailArtikelPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: contentHtml }}
       />
     </article>
+    </>
   );
 }
 
@@ -114,14 +129,80 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const resolvedParams = await params;
   const artikel = await getArtikelBySlug(resolvedParams.slug);
 
+  const slug = resolvedParams.slug;
+  const canonicalUrl = `/blog/${slug}`;
+  const ogImage = artikel?.gambar || '/og-default.svg';
+
   if (!artikel) {
-    return { title: 'Artikel tidak ditemukan | Meow-Care Blog' };
+    return {
+      title: slug || 'Artikel tidak ditemukan',
+      description: 'Artikel yang Anda cari tidak ditemukan.',
+      alternates: {
+        canonical: canonicalUrl,
+      },
+      openGraph: {
+        title: 'Artikel tidak ditemukan | Meow-Care',
+        description: 'Artikel yang Anda cari tidak ditemukan.',
+        type: 'article',
+        url: canonicalUrl,
+        images: [
+          {
+            url: '/og-default.svg',
+            width: 1200,
+            height: 630,
+            alt: 'Meow-Care Klinik Kucing',
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: 'Artikel tidak ditemukan | Meow-Care',
+        description: 'Artikel yang Anda cari tidak ditemukan.',
+        images: ['/og-default.svg'],
+      },
+      robots: {
+        index: true,
+        follow: true,
+      },
+    };
   }
+
   return {
-    title: `${artikel.judul} | Meow-Care Blog`,
+    title: artikel.judul,
     description:
       artikel.kutipan ||
       `Baca artikel ${artikel.judul} untuk tips dan informasi seputar perawatan kucing.`,
-    keywords: [artikel.kategori || 'kesehatan kucing', 'kucing', 'meow care', artikel.judul],
+    keywords: [artikel.kategori || 'kesehatan kucing', 'kucing', 'meow-care', artikel.judul],
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: artikel.judul,
+      description:
+        artikel.kutipan ||
+        `Baca artikel ${artikel.judul} untuk tips dan informasi seputar perawatan kucing.`,
+      type: 'article',
+      url: canonicalUrl,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: artikel.judul,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: artikel.judul,
+      description:
+        artikel.kutipan ||
+        `Baca artikel ${artikel.judul} untuk tips dan informasi seputar perawatan kucing.`,
+      images: [ogImage],
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }

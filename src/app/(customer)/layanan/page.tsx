@@ -1,8 +1,43 @@
+import type { Metadata } from 'next';
 import prisma from '@/lib/prisma';
 import Link from 'next/link';
 import * as LucideIcons from 'lucide-react';
 import { Layanan } from '@prisma/client';
 import type { ElementType } from 'react';
+import { ServiceListJsonLd } from '@/components/StructuredData';
+
+export const metadata: Metadata = {
+  title: 'Layanan',
+  description: 'Daftar layanan klinik kucing Meow-Care: pemeriksaan umum, vaksinasi, grooming, sterilisasi, dental care, dan konsultasi khusus dengan harga transparan.',
+  keywords: ['layanan klinik kucing', 'pemeriksaan kucing', 'vaksinasi kucing', 'grooming kucing', 'sterilisasi kucing', 'dental kucing', 'meow-care'],
+  alternates: {
+    canonical: '/layanan',
+  },
+  openGraph: {
+    title: 'Layanan | Meow-Care',
+    description: 'Daftar layanan klinik kucing Meow-Care: pemeriksaan umum, vaksinasi, grooming, sterilisasi, dental care, dan konsultasi khusus dengan harga transparan.',
+    type: 'website',
+    url: '/layanan',
+    images: [
+      {
+        url: '/og-default.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Layanan Meow-Care Klinik Kucing',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Layanan | Meow-Care',
+    description: 'Daftar layanan klinik kucing Meow-Care: pemeriksaan umum, vaksinasi, grooming, sterilisasi, dental care, dan konsultasi khusus dengan harga transparan.',
+    images: ['/og-default.svg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 const fallbackLayanan: Layanan[] = [
   {
@@ -91,9 +126,16 @@ const formatRupiah = (nominal: number | null | undefined) => {
 
 export default async function HalamanLayanan() {
   const daftarLayanan = await getAllLayanan();
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || 'https://meow-care.example.com';
 
   return (
-    <section id="layanan" className="py-16 sm:py-20 bg-gray-50">
+    <>
+      <ServiceListJsonLd
+        siteUrl={siteUrl}
+        layanan={daftarLayanan.map((l) => ({ nama: l.nama, deskripsi: l.deskripsi }))}
+      />
+      <section id="layanan" className="py-16 sm:py-20 bg-gray-50">
       <div className="container mx-auto text-center px-4">
         <div className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 shadow-sm mb-3 sm:mb-4">
           <LucideIcons.Stethoscope size={18} className="text-brand-green" />
@@ -141,5 +183,6 @@ export default async function HalamanLayanan() {
         </div>
       </div>
     </section>
+    </>
   );
 }

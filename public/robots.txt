@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-
-# Jika Anda ingin menambahkan sitemap, tambahkan baris berikut:
-# Sitemap: https://example.com/sitemap.xml
