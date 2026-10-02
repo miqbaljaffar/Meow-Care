@@ -6,8 +6,8 @@ import QueueCard from './QueueCard';
 import { TampilanAntrianSkeleton } from './SkeletonLoader';
 
 interface QueueData {
-  current?: number;
-  next?: number;
+  current: number | null;
+  next: number | null;
 }
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;

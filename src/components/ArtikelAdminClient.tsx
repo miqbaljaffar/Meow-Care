@@ -62,7 +62,13 @@ export default function ArtikelAdminClient({ initialArtikel, authors }: ArtikelA
                   <div className="flex items-center gap-4">
                      <div className="relative w-16 h-10 rounded-md overflow-hidden bg-gray-100 flex-shrink-0">
                          {item.gambar ? (
-                          <Image src={item.gambar} alt={item.judul} layout="fill" objectFit="cover" />
+                          <Image
+                            src={item.gambar}
+                            alt={item.judul}
+                            fill
+                            sizes="64px"
+                            style={{ objectFit: 'cover' }}
+                          />
                         ) : (
                           <FileText className="w-full h-full text-gray-300 p-2" />
                         )}

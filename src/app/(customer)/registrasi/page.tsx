@@ -10,10 +10,11 @@ export default function HalamanRegistrasi() {
         {/* Kolom Kiri: Gambar & Branding */}
         <div className="relative h-64 w-full md:h-auto md:w-1/2">
           <Image
-            src="/regis.jpg" // Menggunakan gambar yang berbeda untuk variasi
+            src="/regis.jpg"
             alt="Kucing Oren"
-            layout="fill"
-            objectFit="cover"
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            style={{ objectFit: 'cover' }}
             className="transition-transform duration-300 hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent p-8 text-white">

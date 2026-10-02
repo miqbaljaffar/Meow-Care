@@ -12,7 +12,7 @@ export async function GET() {
   ]);
 
   return NextResponse.json({
-    current: sedangDilayani?.nomorAntrian,
-    next: antrianMenunggu?.nomorAntrian,
+    current: sedangDilayani?.nomorAntrian ?? null,
+    next: antrianMenunggu?.nomorAntrian ?? null,
   });
 }

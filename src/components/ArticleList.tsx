@@ -24,10 +24,11 @@ export default function ArticleList({ articles }: ArticleListProps) {
         <Link key={artikel.id} href={`/blog/${artikel.slug}`} className="group block bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden">
           <div className="relative h-48 w-full">
             <Image
-              src={artikel.gambar || '/kucing.jpg'} // Fallback ke gambar default
+              src={artikel.gambar || '/kucing.jpg'}
               alt={artikel.judul}
-              layout="fill"
-              objectFit="cover"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              style={{ objectFit: 'cover' }}
               className="transition-transform duration-300 group-hover:scale-105"
             />
           </div>

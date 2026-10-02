@@ -1,5 +1,9 @@
+import { fileURLToPath } from 'url';
 import path from 'path';
 import type { NextConfig } from 'next';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -11,14 +15,17 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'id.pinterest.com',
-        port: '',
-        pathname: '/pin/**',
+        hostname: '**',
       },
     ],
   },
   turbopack: {
-    root: path.join(__dirname),
+    root: __dirname,
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
   },
 };
 

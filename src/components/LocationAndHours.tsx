@@ -12,12 +12,11 @@ export default function LocationAndHours() {
               <MapPin className="text-brand-green" />
               Lokasi Kami
             </h3>
-            <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-lg">
-              {/* Ganti iframe src dengan embed Google Maps klinik Anda */}
+            <div className="w-full aspect-video rounded-lg overflow-hidden shadow-lg">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.902310164993!2d107.616675!3d-6.902216!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e64c5e8866e5%3A0x232247501a5e5811!2sGedung%20Sate!5e0!3m2!1sen!2sid!4v1678886518306!5m2!1sen!2sid"
-                width="100%"
-                height="350"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.902310164993!2d107.616675!3d-6.902216!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e64c5e8866e5%3A0x232247501a5e5811!2sGedung%20Sate!5e0!3m2!1sid!2sid!4v1678886518306"
+                title="Lokasi Meow-Care"
+                className="w-full h-full"
                 style={{ border: 0 }}
                 allowFullScreen={true}
                 loading="lazy"
@@ -32,19 +31,25 @@ export default function LocationAndHours() {
               <Clock className="text-brand-green" />
               Jam Operasional
             </h3>
-            <div className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
-              <ul className="space-y-3">
-                <li className="flex justify-between items-center">
-                  <span className="text-gray-100">Senin - Jumat</span>
-                  <span className="font-semibold text-brand-green-light bg-gray-900 px-3 py-1 rounded">08:00 - 20:00 WIB</span>
+            <div className="bg-gray-800 p-5 sm:p-6 rounded-lg shadow-lg border border-gray-700">
+              <ul className="space-y-3 sm:space-y-4">
+                <li className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
+                  <span className="text-gray-100 font-medium">Senin - Jumat</span>
+                  <span className="font-semibold text-brand-green-light bg-gray-900 px-3 py-1.5 rounded-md text-sm sm:text-base text-center sm:text-right">
+                    08:00 - 20:00 WIB
+                  </span>
                 </li>
-                <li className="flex justify-between items-center">
-                  <span className="text-gray-100">Sabtu</span>
-                  <span className="font-semibold text-brand-green-light bg-gray-900 px-3 py-1 rounded">09:00 - 18:00 WIB</span>
+                <li className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
+                  <span className="text-gray-100 font-medium">Sabtu</span>
+                  <span className="font-semibold text-brand-green-light bg-gray-900 px-3 py-1.5 rounded-md text-sm sm:text-base text-center sm:text-right">
+                    09:00 - 18:00 WIB
+                  </span>
                 </li>
-                <li className="flex justify-between items-center">
-                  <span className="text-gray-100">Minggu & Hari Libur</span>
-                  <span className="font-semibold text-red-300 bg-gray-900 px-3 py-1 rounded">Tutup</span>
+                <li className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
+                  <span className="text-gray-100 font-medium">Minggu &amp; Hari Libur</span>
+                  <span className="font-semibold text-red-300 bg-gray-900 px-3 py-1.5 rounded-md text-sm sm:text-base text-center sm:text-right">
+                    Tutup
+                  </span>
                 </li>
               </ul>
             </div>
