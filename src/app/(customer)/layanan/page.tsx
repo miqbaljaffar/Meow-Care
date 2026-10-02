@@ -5,6 +5,7 @@ import * as LucideIcons from 'lucide-react';
 import { Layanan } from '@prisma/client';
 import type { ElementType } from 'react';
 import { ServiceListJsonLd } from '@/components/StructuredData';
+import { extractDbError } from '@/lib/log-error';
 
 export const metadata: Metadata = {
   title: 'Layanan',
@@ -109,7 +110,7 @@ const getAllLayanan = async (): Promise<Layanan[]> => {
     });
     return data.length > 0 ? data : fallbackLayanan;
   } catch (error) {
-    console.warn('Gagal memuat daftar layanan (fallback ditampilkan):', error);
+    console.warn('Gagal memuat daftar layanan (fallback ditampilkan):', extractDbError(error));
     return fallbackLayanan;
   }
 };

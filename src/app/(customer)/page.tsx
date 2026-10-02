@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import prisma from '@/lib/prisma';
+import { extractDbError } from '@/lib/log-error';
 import TampilanAntrian from '@/components/TampilanAntrian';
 import HeroSection from '@/components/HeroSection';
 import Link from 'next/link';
@@ -96,7 +97,7 @@ const getAntrianData = async (): Promise<{ current: number | null; next: number 
       next: antrianMenunggu?.nomorAntrian ?? null,
     };
   } catch (error) {
-    console.warn('Gagal memuat data antrian (fallback ditampilkan):', error);
+    console.warn('Gagal memuat data antrian (fallback ditampilkan):', extractDbError(error));
     return { current: null, next: null };
   }
 };
@@ -119,7 +120,7 @@ const getArtikelTerbaru = async (): Promise<ArtikelItem[]> => {
       kategori: a.kategori,
     }));
   } catch (error) {
-    console.warn('Gagal memuat artikel terbaru (fallback ditampilkan):', error);
+    console.warn('Gagal memuat artikel terbaru (fallback ditampilkan):', extractDbError(error));
     return fallbackArtikel;
   }
 };

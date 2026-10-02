@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import prisma from '@/lib/prisma';
 import BlogPageClient from '@/components/BlogPageClient';
 import type { Artikel } from '@prisma/client';
+import { extractDbError } from '@/lib/log-error';
 
 export const metadata: Metadata = {
   title: 'Blog & Edukasi',
@@ -44,7 +45,7 @@ const getArtikelTerbit = async (): Promise<Artikel[]> => {
     });
     return artikel;
   } catch (error) {
-    console.warn('Gagal memuat daftar artikel (fallback kosong):', error);
+    console.warn('Gagal memuat daftar artikel (fallback kosong):', extractDbError(error));
     return [];
   }
 };
@@ -58,7 +59,7 @@ const getKategori = async (): Promise<string[]> => {
     });
     return kategori.map((item) => item.kategori).filter(Boolean) as string[];
   } catch (error) {
-    console.warn('Gagal memuat kategori artikel:', error);
+    console.warn('Gagal memuat kategori artikel:', extractDbError(error));
     return [];
   }
 };

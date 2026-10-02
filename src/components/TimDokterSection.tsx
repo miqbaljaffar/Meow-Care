@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import prisma from '@/lib/prisma';
 import { UserRound } from 'lucide-react';
+import { extractDbError } from '@/lib/log-error';
 
 const fallbackDokter = [
   { id: 1, nama: 'dr. Andini Putri', spesialisasi: 'Spesialis Kucing', foto: null as string | null },
@@ -20,7 +21,7 @@ export default async function TimDokterSection() {
       tim = data;
     }
   } catch (error) {
-    console.warn('Gagal memuat data dokter (fallback ditampilkan):', error);
+    console.warn('Gagal memuat data dokter (fallback ditampilkan):', extractDbError(error));
   }
 
   return (

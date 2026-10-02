@@ -6,8 +6,8 @@ import { TampilanAntrianSkeleton } from './SkeletonLoader';
 
 // 1. Definisikan tipe untuk data antrian
 interface QueueData {
-  current: number;
-  next: number;
+  current: number | null;
+  next: number | null;
 }
 
 // 2. Definisikan tipe untuk props komponen

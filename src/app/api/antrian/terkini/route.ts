@@ -2,17 +2,26 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
-// Revalidate data setiap 10 detik
 export const revalidate = 10;
 
 export async function GET() {
-  const [sedangDilayani, antrianMenunggu] = await Promise.all([
-    prisma.antrian.findFirst({ where: { status: 'Dilayani' } }),
-    prisma.antrian.findFirst({ where: { status: 'Menunggu' }, orderBy: { nomorAntrian: 'asc' } }),
-  ]);
+  try {
+    const [sedangDilayani, antrianMenunggu] = await Promise.all([
+      prisma.antrian.findFirst({ where: { status: 'Dilayani' } }),
+      prisma.antrian.findFirst({
+        where: { status: 'Menunggu' },
+        orderBy: { nomorAntrian: 'asc' },
+      }),
+    ]);
 
-  return NextResponse.json({
-    current: sedangDilayani?.nomorAntrian ?? null,
-    next: antrianMenunggu?.nomorAntrian ?? null,
-  });
+    return NextResponse.json({
+      current: sedangDilayani?.nomorAntrian ?? null,
+      next: antrianMenunggu?.nomorAntrian ?? null,
+    });
+  } catch {
+    return NextResponse.json(
+      { current: null, next: null, error: 'Gagal mengambil data antrian' },
+      { status: 200 }
+    );
+  }
 }

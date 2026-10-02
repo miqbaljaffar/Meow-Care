@@ -2,6 +2,7 @@ import prisma from '@/lib/prisma';
 import Link from 'next/link';
 import { Stethoscope, ShieldCheck, HeartPulse, Syringe, Scissors, Pill } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { extractDbError } from '@/lib/log-error';
 
 const fallbackLayanan = [
   { id: 1, nama: 'Pemeriksaan Umum', deskripsi: 'Pemeriksaan menyeluruh untuk memastikan kondisi kesehatan kucing Anda optimal.', icon: 'Stethoscope' },
@@ -21,7 +22,7 @@ async function getLayananUnggulan() {
     });
     return data.length > 0 ? data : fallbackLayanan;
   } catch (error) {
-    console.warn('Gagal memuat layanan unggulan (fallback ditampilkan):', error);
+    console.warn('Gagal memuat layanan unggulan (fallback ditampilkan):', extractDbError(error));
     return fallbackLayanan;
   }
 }

@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import { MessageCircle, Cat } from 'lucide-react';
+import { extractDbError } from '@/lib/log-error';
 
 const fallbackTestimoni = [
   {
@@ -34,7 +35,7 @@ const fallbackTestimoni = [
 
 type FallbackItem = (typeof fallbackTestimoni)[number];
 
-async function getTestimoni(): Promise<Array<{ id: number; kutipan: string; namaPemilik: string; namaKucing: string }>> {
+async function getTestimoni(): Promise<FallbackItem[]> {
   try {
     const data = await prisma.testimoni.findMany({
       take: 4,
@@ -58,7 +59,7 @@ async function getTestimoni(): Promise<Array<{ id: number; kutipan: string; nama
       namaKucing: t.riwayatLayanan?.kucing?.nama || 'Kucing',
     }));
   } catch (error) {
-    console.warn('Gagal memuat testimoni (fallback ditampilkan):', error);
+    console.warn('Gagal memuat testimoni (fallback ditampilkan):', extractDbError(error));
     return fallbackTestimoni;
   }
 }

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { CalendarDays, UserRound, ArrowLeft, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import { BlogPostingJsonLd } from '@/components/StructuredData';
+import { extractDbError } from '@/lib/log-error';
 
 const getArtikelBySlug = async (slug: string) => {
   try {
@@ -17,7 +18,7 @@ const getArtikelBySlug = async (slug: string) => {
     });
     return artikel;
   } catch (error) {
-    console.warn('Gagal memuat artikel detail:', error);
+    console.warn('Gagal memuat artikel detail:', extractDbError(error));
     return null;
   }
 };
